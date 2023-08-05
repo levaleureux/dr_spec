@@ -15,7 +15,7 @@
 # add your tests here
 
 spec :example do
-  it "works" do |args, assert|
+  it "works" do
     assert.equal!(5 + 5, 10)
   end
 end
@@ -27,18 +27,19 @@ spec :another_spec do
       @a = 4
     end
 
-    it "expectation_3" do |args, assert|
+    it "expectation_3" do
       puts "I'm the num 3"
       @a = 4
       puts @a = @a * 3
       assert.equal! @a, 12, "nope 12"
+      aw.expect(@a).to eq 11, fail_with: "nope 12"
     end
 
     context "context_3" do
       before do
         @b = 5
       end
-      it "expectation_4" do |args, assert|
+      it "expectation_4" do
         puts "I'm the num 4"
         @a = 4
         puts @a = @a * 5 + @b
@@ -48,5 +49,7 @@ spec :another_spec do
   end
 
 end
+=begin
+=end
 
 run_tests
