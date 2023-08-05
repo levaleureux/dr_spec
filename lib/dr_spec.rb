@@ -1,6 +1,8 @@
 def context(description, &block)
   subcontext = { description: description, subcontexts: [],
-                 tests: [], befores: @current_context[:befores] }
+                 tests: [],
+                 befores: @current_context[:befores],
+                 afters:  @current_context[:afters] }
   @current_context[:subcontexts] << subcontext
   previous_context = @current_context
   @current_context = subcontext
@@ -10,6 +12,10 @@ end
 
 def before &block
   @current_context[:befores] << block
+end
+
+def after &block
+  @current_context[:afters] << block
 end
 
 def it(message, &block)
@@ -22,7 +28,8 @@ def spec(name, focus: false)
   test_name    = "test_#{name}"
   test_name    = "focus_#{test_name}" if focus
   root_context = { description: test_name,
-                    subcontexts: [], tests: [], befores: [] }
+                    subcontexts: [], tests: [],
+                    befores: [], afters: [] }
   @current_context = root_context
   yield
   parse_spec(root_context, test_name)
@@ -34,6 +41,7 @@ def parse_spec(context, test_name)
     define_method(method_name) do |args, assert|
       context[:befores].each {|before| before.call args, assert}
       test[:block].call args, assert
+      context[:afters].each {|after| after.call args, assert}
     end
   end
 

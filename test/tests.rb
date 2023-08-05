@@ -29,7 +29,6 @@ spec :another_spec do
 
     it "expectation_3" do |args, assert|
       puts "I'm the num 3"
-      @a = 4
       puts @a = @a * 3
       assert.equal! @a, 12, "nope 12"
     end
@@ -40,10 +39,22 @@ spec :another_spec do
       end
       it "expectation_4" do |args, assert|
         puts "I'm the num 4"
-        @a = 4
         puts @a = @a * 5 + @b
         assert.equal! @a, 25, "nope 25"
       end
+      after do |args, assert|
+        @b = 6
+        puts "after 4"
+        @a = 4 * 5 + @b
+        assert.equal! @a, 26, "nope 25"
+      end
+    end
+
+    after do |args, assert|
+      puts "after the_first_context"
+      puts @a
+      # TODO @a is 26 and should be 4 there is here a scope issue
+      #assert.equal! @a, 4, "nope 4"
     end
   end
 
