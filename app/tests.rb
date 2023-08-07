@@ -2,6 +2,9 @@
 
 require "lib/dragon_test.rb"
 require "lib/dr_spec/matchers.rb"
+require "lib/dr_spec/numeric_comparison_matchers.rb"
+require "lib/dr_spec/boolean_matchers.rb"
+require "lib/dr_spec/type_matchers.rb"
 require "lib/dr_spec/core.rb"
 
 # add requires for additional test files here

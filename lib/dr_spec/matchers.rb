@@ -12,3 +12,4 @@ end
 def eq(expected, fail_with: "")
   EqualMatcher.new(expected, fail_with)
 end
+
