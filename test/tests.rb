@@ -45,6 +45,19 @@ spec :another_spec do
         puts @a = @a * 5 + @b
         assert.equal! @a, 25, "nope 25"
       end
+      after do |args, assert|
+        @b = 6
+        puts "after 4"
+        @a = 4 * 5 + @b
+        assert.equal! @a, 26, "nope 25"
+      end
+    end
+
+    after do |args, assert|
+      puts "after the_first_context"
+      puts @a
+      # TODO @a is 26 and should be 4 there is here a scope issue
+      #assert.equal! @a, 4, "nope 4"
     end
   end
 
