@@ -1,5 +1,3 @@
-# To run the tests: ./run_tests
-#
 # Available assertions:
 # assert.true!
 # assert.false!
@@ -8,12 +6,7 @@
 # assert.includes!
 # assert.not_includes!
 # assert.int!
-# + any that you define
 #
-# Powered by Dragon Test: https://github.com/DragonRidersUnite/dragon_test
-
-# add your tests here
-
 spec :example do
   it "works" do |args, assert|
     assert.equal!(5 + 5, 10)
@@ -61,6 +54,48 @@ spec :another_spec do
     end
   end
 
+end
+
+# Numeric Comparison matchers
+#
+#
+spec :be_greater_than do
+  it "be_greater_than" do |args, assert|
+    expect(10).to be_greater_than 5
+  end
+end
+
+spec :be_greater_than_or_equal_to do
+  it "be_greater_than_or_equal_to" do |args, assert|
+    expect(10).to be_greater_than_or_equal_to 10
+  end
+end
+
+spec :be_less_than do
+  it "be_less_than" do |args, assert|
+    expect(5).to be_less_than 10
+  end
+end
+
+spec :be_less_than_or_equal_to do
+  it "be_less_than_or_equal_to" do |args, assert|
+    expect(5).to be_less_than_or_equal_to 5
+  end
+end
+
+# Boolean matchers
+#
+#
+spec :be_truthy do
+  it "be_truthy" do |args, assert|
+    expect(true).to be_truthy
+  end
+end
+
+spec :be_falsy do
+  it "be_falsy" do |args, assert|
+    expect(false).to be_falsy
+  end
 end
 
 run_tests
