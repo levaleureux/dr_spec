@@ -1,7 +1,8 @@
 # NOTE: don't write tests in this file, instead put them in `test/main_test.rb`.
 
 require "lib/dragon_test.rb"
-require "lib/dr_spec.rb"
+require "lib/dr_spec/matchers.rb"
+require "lib/dr_spec/core.rb"
 
 # add requires for additional test files here
 

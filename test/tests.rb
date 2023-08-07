@@ -30,7 +30,10 @@ spec :another_spec do
     it "expectation_3" do |args, assert|
       puts "I'm the num 3"
       puts @a = @a * 3
-      assert.equal! @a, 12, "nope 12"
+      expect(@a)
+        .to(eq 12, fail_with: "nope 12")
+        .and
+        .to(eq 24 / 2, fail_with: "nope it's 12 again")
     end
 
     context "context_3" do

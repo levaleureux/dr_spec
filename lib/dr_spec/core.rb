@@ -1,3 +1,29 @@
+class AssertionWrapper
+  def initialize(assert)
+    @assert = assert
+  end
+
+  def expect(subject)
+    Expectation.new(subject, @assert)
+  end
+end
+
+class Expectation
+  def initialize(subject, assert)
+    @subject = subject
+    @assert = assert
+  end
+
+  def to(matcher)
+    matcher.match?(@assert, @subject)
+    self
+  end
+
+  def and
+    self
+  end
+end
+
 def context(description, &block)
   subcontext = { description: description, subcontexts: [],
                  tests: [],
@@ -39,9 +65,15 @@ def parse_spec(context, test_name)
   context[:tests].each do |test|
     method_name = "#{test_name}_#{test[:description]}"
     define_method(method_name) do |args, assert|
-      context[:befores].each {|before| before.call args, assert}
-      test[:block].call args, assert
-      context[:afters].each {|after| after.call args, assert}
+      @assertion_wrapper = AssertionWrapper.new assert
+      def expect(subject) ; @assertion_wrapper.expect(subject) end
+      context[:befores].each do |before|
+        instance_exec args, assert, &before
+      end
+      instance_exec args, assert, &test[:block]
+      context[:afters].each do |after|
+        instance_exec args, assert, &after
+      end
     end
   end
 
