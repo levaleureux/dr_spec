@@ -62,9 +62,27 @@ def spec(name, focus: false)
   parse_spec(root_context, test_name)
 end
 
+def to_snake_case(input)
+  words = []
+  current_word = ""
+
+  input.each_char do |char|
+    if char == char.upcase && !current_word.empty?
+      words << current_word.downcase
+      current_word = ""
+    end
+    current_word << char
+  end
+
+  words << current_word.downcase unless current_word.empty?
+  res = words.join('_')
+  res.gsub("_ _", "_").gsub("___", "_")
+    .gsub("__","_").gsub("_ ", "_")
+end
+
 def parse_spec(context, test_name)
   context[:tests].each do |test|
-    method_name = "#{test_name}_#{test[:description]}"
+    method_name = to_snake_case "#{test_name}_#{test[:description]}"
     define_method(method_name) do |args, assert|
       @assertion_wrapper = AssertionWrapper.new assert
       def expect(subject) ; @assertion_wrapper.expect(subject) end

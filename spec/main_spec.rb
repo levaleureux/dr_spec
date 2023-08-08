@@ -56,11 +56,21 @@ spec :another_spec do
 
 end
 
+spec "utilities function" do
+  it :to_snake_case do |args, assert|
+    expect(to_snake_case("Hello World")).to eq "hello_world"
+    expect(to_snake_case("AnotherExampleString")).to eq "another_example_string"
+    expect(to_snake_case("Snake Case Conversion")).to eq "snake_case_conversion"
+    expect(to_snake_case("ABC")).to eq "a_b_c"
+    expect(to_snake_case("hello_ World")).to eq "hello_world"
+  end
+end
+
 # Numeric Comparison matchers
 #
 #
-spec :numeric_comparison_matchers do
-  it "be_greater_than" do |args, assert|
+spec "Numeric Comparison matchers" do
+  it "be greater than" do |args, assert|
     expect(10).to be_greater_than 5
   end
   it "be_greater_than_or_equal_to" do |args, assert|
