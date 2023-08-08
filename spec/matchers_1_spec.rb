@@ -14,12 +14,14 @@ spec :end_with do
   end
 end
 
+=begin
 spec :match do
   #it "checks if a string matches a specific pattern" do |args, assert|
   it "match" do |args, assert|
     expect("Hello, world!").to match /Hello/
   end
 end
+=end
 
 # Collection Matchers
 

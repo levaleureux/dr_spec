@@ -8,7 +8,7 @@ class StartWithMatcher
   end
 
   def match? assert, string
-    assert.start_with! string, @expected_prefix, message(string)
+    assert.true! string.start_with?(@expected_prefix), message(string)
   end
 
   private
@@ -18,7 +18,7 @@ class StartWithMatcher
   end
 end
 
-def start_with expected_prefix, fail_with
+def start_with expected_prefix, fail_with: ""
   StartWithMatcher.new expected_prefix, fail_with
 end
 
@@ -29,7 +29,7 @@ class EndWithMatcher
   end
 
   def match? assert, string
-    assert.end_with! string, @expected_suffix, message(string)
+    assert.true! string.end_with?(@expected_suffix), message(string)
   end
 
   private
@@ -39,7 +39,7 @@ class EndWithMatcher
   end
 end
 
-def end_with expected_suffix, fail_with
+def end_with expected_suffix, fail_with: ""
   EndWithMatcher.new expected_suffix, fail_with
 end
 
