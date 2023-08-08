@@ -1,3 +1,4 @@
+
 class AssertionWrapper
   def initialize(assert)
     @assert = assert

@@ -23,7 +23,7 @@ end
 class BeKindOfMatcher
   def initialize(expected_class, fail_with)
     @expected_class = expected_class
-    @fail_with = fail_with
+    @fail_with      = fail_with
   end
 
   def match?(assert, actual)
