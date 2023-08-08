@@ -59,25 +59,16 @@ end
 # Numeric Comparison matchers
 #
 #
-spec :be_greater_than do
+spec :numeric_comparison_matchers do
   it "be_greater_than" do |args, assert|
     expect(10).to be_greater_than 5
   end
-end
-
-spec :be_greater_than_or_equal_to do
   it "be_greater_than_or_equal_to" do |args, assert|
     expect(10).to be_greater_than_or_equal_to 10
   end
-end
-
-spec :be_less_than do
   it "be_less_than" do |args, assert|
     expect(5).to be_less_than 10
   end
-end
-
-spec :be_less_than_or_equal_to do
   it "be_less_than_or_equal_to" do |args, assert|
     expect(5).to be_less_than_or_equal_to 5
   end
@@ -86,13 +77,10 @@ end
 # Boolean matchers
 #
 #
-spec :be_truthy do
+spec :boolean_matchers do
   it "be_truthy" do |args, assert|
     expect(true).to be_truthy
   end
-end
-
-spec :be_falsy do
   it "be_falsy" do |args, assert|
     expect(false).to be_falsy
   end
