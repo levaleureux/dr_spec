@@ -62,7 +62,8 @@ spec "utilities function" do
     expect(to_snake_case("AnotherExampleString") ).to eq "another_example_string"
     expect(to_snake_case("Snake Case Conversion")).to eq "snake_case_conversion"
     expect(to_snake_case("ABC")                  ).to eq "a_b_c"
-    expect(to_snake_case("hell_o_ World")         ).to eq "hello_world"
+    expect(to_snake_case("hello _World")         ).to eq "hello_world"
+    expect(to_snake_case("foo")              ).not_to eq "bar"
   end
 end
 
@@ -72,15 +73,19 @@ end
 spec "Numeric Comparison matchers" do
   it "be greater than" do |args, assert|
     expect(10).to be_greater_than 5
+    expect(10).not_to be_greater_than 10
   end
   it "be_greater_than_or_equal_to" do |args, assert|
     expect(10).to be_greater_than_or_equal_to 10
+    expect(10).not_to be_greater_than_or_equal_to 11 # ???? TODO test in deep
   end
   it "be_less_than" do |args, assert|
     expect(5).to be_less_than 10
+    expect(5).not_to be_less_than 4
   end
   it "be_less_than_or_equal_to" do |args, assert|
     expect(5).to be_less_than_or_equal_to 5
+    expect(5).not_to be_less_than_or_equal_to 4
   end
 end
 
@@ -90,9 +95,11 @@ end
 spec :boolean_matchers do
   it "be_truthy" do |args, assert|
     expect(true).to be_truthy
+    expect(false).not_to be_truthy
   end
   it "be_falsy" do |args, assert|
     expect(false).to be_falsy
+    expect(true).not_to be_falsy
   end
 end
 
