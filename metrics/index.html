@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sandi Chart</title>
+  <link rel="stylesheet" href="assets/normalize.css">
+  <link rel="stylesheet" href="assets/morris.css">
+  <link rel="stylesheet" href="assets/style.css">
+  <script src="assets/jquery.js"></script>
+  <script src="assets/chart.js"></script>
+  <script src="assets/script.js"></script>
+  <script type="text/javascript">
+    var data = [{"r10":21,"r11":0,"r20":27,"r21":24,"r30":78,"r31":0,"r40":0,"r41":0,"timestamp":1691619150000}];
+  </script>
+</head>
+<body>
+  <a href="https://github.com/makaroni4/sandi_meter"><img style="position: absolute; top: 0; left: 0; border: 0;" src="assets/forkme.png" alt="Fork me on GitHub"></a>
+  <div class="container">
+    <header>
+      <h1 class="main-title">Sandi Metz rules</h1>
+      <h2 class="main-description js-report-date"></h2>
+    </header>
+    <section class="pie-charts">
+      <div id="pie1" class="pie-charts-item"></div>
+      <div id="pie2" class="pie-charts-item"></div>
+      <div id="pie3" class="pie-charts-item"></div>
+      <div id="pie4" class="pie-charts-item"></div>
+      <div class="clearfix"></div>
+    </section>
+    <nav class="main-menu">
+      <a href="#" class="main-menu-active js-menu-item" data-rel=".js-charts">Rules</a>
+      <a href="#" class="js-menu-item" data-rel=".js-charts-percentage">Rules %</a>
+      <a href="#" class="js-menu-item" data-rel=".js-progress">Progress %</a>
+      <a href="#" class="js-menu-item" data-rel=".js-details">Details</a>
+    </nav>
+    <section class="plot-charts js-charts js-tab-item">
+      <div class="plot-charts-item">
+        <div class="plot-charts-item-caption">Number of 100 line classes vs time</div>
+        <div class="plot-charts-item-graph plot1"></div>
+      </div>
+      <div class="plot-charts-item">
+        <div class="plot-charts-item-caption">Number of 5 line methods vs time</div>
+        <div class="plot-charts-item-graph plot2"></div>
+      </div>
+      <div class="clearfix"></div>
+      <div class="plot-charts-item">
+        <div class="plot-charts-item-caption">Number of methods calls with 4 params vs time</div>
+        <div class="plot-charts-item-graph plot3"></div>
+      </div>
+      <div class="plot-charts-item">
+        <div class="plot-charts-item-caption">Number of controllers with 1 instance variable vs time</div>
+        <div class="plot-charts-item-graph plot4"></div>
+      </div>
+      <div class="clearfix"></div>
+    </section>
+    <section class="details js-details js-tab-item">
+      <h2>Methods with 5+ lines</h2>
+<table class="details-stats">
+  <thead>
+    <tr>
+<th class="" title="">Class name</th>
+<th class="" title="">Method name</th>
+<th class="" title="">Size</th>
+<th class="" title="">Path</th>
+</tr>
+
+  </thead>
+  <tbody>
+    <tr>
+<td class="" title=""></td>
+<td class="" title="">run_tests</td>
+<td class="" title="">21</td>
+<td class="" title="">lib/dragon_test.rb</td>
+</tr>
+<tr>
+<td class="warning" title="Misindented methods">StringTestFormater</td>
+<td class="warning" title="Misindented methods">black</td>
+<td class="warning" title="Misindented methods"></td>
+<td class="warning" title="Misindented methods">lib/dr_spec/tests_formater.rb</td>
+</tr>
+<tr>
+<td class="warning" title="Misindented methods">StringTestFormater</td>
+<td class="warning" title="Misindented methods">red</td>
+<td class="warning" title="Misindented methods"></td>
+<td class="warning" title="Misindented methods">lib/dr_spec/tests_formater.rb</td>
+</tr>
+<tr>
+<td class="warning" title="Misindented methods">StringTestFormater</td>
+<td class="warning" title="Misindented methods">green</td>
+<td class="warning" title="Misindented methods"></td>
+<td class="warning" title="Misindented methods">lib/dr_spec/tests_formater.rb</td>
+</tr>
+<tr>
+<td class="warning" title="Misindented methods">StringTestFormater</td>
+<td class="warning" title="Misindented methods">brown</td>
+<td class="warning" title="Misindented methods"></td>
+<td class="warning" title="Misindented methods">lib/dr_spec/tests_formater.rb</td>
+</tr>
+<tr>
+<td class="warning" title="Misindented methods">StringTestFormater</td>
+<td class="warning" title="Misindented methods">blue</td>
+<td class="warning" title="Misindented methods"></td>
+<td class="warning" title="Misindented methods">lib/dr_spec/tests_formater.rb</td>
+</tr>
+<tr>
+<td class="warning" title="Misindented methods">StringTestFormater</td>
+<td class="warning" title="Misindented methods">magenta</td>
+<td class="warning" title="Misindented methods"></td>
+<td class="warning" title="Misindented methods">lib/dr_spec/tests_formater.rb</td>
+</tr>
+<tr>
+<td class="warning" title="Misindented methods">StringTestFormater</td>
+<td class="warning" title="Misindented methods">cyan</td>
+<td class="warning" title="Misindented methods"></td>
+<td class="warning" title="Misindented methods">lib/dr_spec/tests_formater.rb</td>
+</tr>
+<tr>
+<td class="warning" title="Misindented methods">StringTestFormater</td>
+<td class="warning" title="Misindented methods">gray</td>
+<td class="warning" title="Misindented methods"></td>
+<td class="warning" title="Misindented methods">lib/dr_spec/tests_formater.rb</td>
+</tr>
+<tr>
+<td class="warning" title="Misindented methods">StringTestFormater</td>
+<td class="warning" title="Misindented methods">g38</td>
+<td class="warning" title="Misindented methods"></td>
+<td class="warning" title="Misindented methods">lib/dr_spec/tests_formater.rb</td>
+</tr>
+<tr>
+<td class="warning" title="Misindented methods">StringTestFormater</td>
+<td class="warning" title="Misindented methods">g39</td>
+<td class="warning" title="Misindented methods"></td>
+<td class="warning" title="Misindented methods">lib/dr_spec/tests_formater.rb</td>
+</tr>
+<tr>
+<td class="warning" title="Misindented methods">StringTestFormater</td>
+<td class="warning" title="Misindented methods">bg_black</td>
+<td class="warning" title="Misindented methods"></td>
+<td class="warning" title="Misindented methods">lib/dr_spec/tests_formater.rb</td>
+</tr>
+<tr>
+<td class="warning" title="Misindented methods">StringTestFormater</td>
+<td class="warning" title="Misindented methods">bg_red</td>
+<td class="warning" title="Misindented methods"></td>
+<td class="warning" title="Misindented methods">lib/dr_spec/tests_formater.rb</td>
+</tr>
+<tr>
+<td class="warning" title="Misindented methods">StringTestFormater</td>
+<td class="warning" title="Misindented methods">bg_green</td>
+<td class="warning" title="Misindented methods"></td>
+<td class="warning" title="Misindented methods">lib/dr_spec/tests_formater.rb</td>
+</tr>
+<tr>
+<td class="warning" title="Misindented methods">StringTestFormater</td>
+<td class="warning" title="Misindented methods">bg_brown</td>
+<td class="warning" title="Misindented methods"></td>
+<td class="warning" title="Misindented methods">lib/dr_spec/tests_formater.rb</td>
+</tr>
+<tr>
+<td class="warning" title="Misindented methods">StringTestFormater</td>
+<td class="warning" title="Misindented methods">bg_blue</td>
+<td class="warning" title="Misindented methods"></td>
+<td class="warning" title="Misindented methods">lib/dr_spec/tests_formater.rb</td>
+</tr>
+<tr>
+<td class="warning" title="Misindented methods">StringTestFormater</td>
+<td class="warning" title="Misindented methods">bg_magenta</td>
+<td class="warning" title="Misindented methods"></td>
+<td class="warning" title="Misindented methods">lib/dr_spec/tests_formater.rb</td>
+</tr>
+<tr>
+<td class="warning" title="Misindented methods">StringTestFormater</td>
+<td class="warning" title="Misindented methods">bg_cyan</td>
+<td class="warning" title="Misindented methods"></td>
+<td class="warning" title="Misindented methods">lib/dr_spec/tests_formater.rb</td>
+</tr>
+<tr>
+<td class="warning" title="Misindented methods">StringTestFormater</td>
+<td class="warning" title="Misindented methods">bg_gray</td>
+<td class="warning" title="Misindented methods"></td>
+<td class="warning" title="Misindented methods">lib/dr_spec/tests_formater.rb</td>
+</tr>
+<tr>
+<td class="warning" title="Misindented methods">StringTestFormater</td>
+<td class="warning" title="Misindented methods">bold</td>
+<td class="warning" title="Misindented methods"></td>
+<td class="warning" title="Misindented methods">lib/dr_spec/tests_formater.rb</td>
+</tr>
+<tr>
+<td class="warning" title="Misindented methods">StringTestFormater</td>
+<td class="warning" title="Misindented methods">italic</td>
+<td class="warning" title="Misindented methods"></td>
+<td class="warning" title="Misindented methods">lib/dr_spec/tests_formater.rb</td>
+</tr>
+<tr>
+<td class="warning" title="Misindented methods">StringTestFormater</td>
+<td class="warning" title="Misindented methods">underline</td>
+<td class="warning" title="Misindented methods"></td>
+<td class="warning" title="Misindented methods">lib/dr_spec/tests_formater.rb</td>
+</tr>
+<tr>
+<td class="warning" title="Misindented methods">StringTestFormater</td>
+<td class="warning" title="Misindented methods">blink</td>
+<td class="warning" title="Misindented methods"></td>
+<td class="warning" title="Misindented methods">lib/dr_spec/tests_formater.rb</td>
+</tr>
+<tr>
+<td class="warning" title="Misindented methods">StringTestFormater</td>
+<td class="warning" title="Misindented methods">reverse_color</td>
+<td class="warning" title="Misindented methods"></td>
+<td class="warning" title="Misindented methods">lib/dr_spec/tests_formater.rb</td>
+</tr>
+
+  </tbody>
+</table>
+<div class="hint">NOTE: Red methods are misindented. Continue your way to perfect code by fixing them.</div>
+    </section>
+    <section class="charts-percentage js-charts-percentage js-tab-item">
+    </section>
+    <section class="progress js-progress js-tab-item">
+      <div class="plot-charts-item">
+        <div class="plot-charts-item-caption">Overall progress</div>
+        <div class="plot-charts-item-graph plot"></div>
+        <div class="clearfix"></div>
+      </div>
+    </section>
+    <footer class="main-footer">
+      Scanned with love by <a href="https://github.com/makaroni4/sandi_meter">sandi_meter</a> gem.
+      Please, <a href="https://github.com/makaroni4/sandi_meter/issues/new">leave an issue</a> or
+      <a href="mailto:makaroni4@gmail.com">email</a> some feedback!
+    </footer>
+  </div>
+</body>
+</html>
