@@ -1,11 +1,14 @@
-class EqualMatcher
+class EqualMatcher < CoreMatcher
   def initialize(expected, fail_with)
     @expected  = expected
     @fail_with = fail_with
   end
 
-  def match?(assert, actual)
-    assert.equal! actual, @expected, @fail_with
+  def positive_match? actual
+    [
+      actual == @expected,
+      "#{actual} does not equal to #{@expected}"
+    ]
   end
 end
 
