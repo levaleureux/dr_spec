@@ -1,26 +1,22 @@
+
 class AssertionWrapper
-  def initialize assert
+  def initialize(assert)
     @assert = assert
   end
 
-  def expect subject
-    Expectation.new subject, @assert
+  def expect(subject)
+    Expectation.new(subject, @assert)
   end
 end
 
 class Expectation
-  def initialize subject, assert
+  def initialize(subject, assert)
     @subject = subject
     @assert = assert
   end
 
-  def to matcher
-    matcher.match? @assert, @subject
-    self
-  end
-
-  def not_to matcher
-    matcher.not_match? @assert, @subject
+  def to(matcher)
+    matcher.match?(@assert, @subject)
     self
   end
 
@@ -29,7 +25,7 @@ class Expectation
   end
 end
 
-def context description, &block
+def context(description, &block)
   subcontext = { description: description, subcontexts: [],
                  tests: [],
                  befores: @current_context[:befores],
@@ -49,13 +45,13 @@ def after &block
   @current_context[:afters] << block
 end
 
-def it message, &block
+def it(message, &block)
   @current_context[:tests] << { description: message, block: block }
 end
 
-def focus_spec name ; spec name, focus: true end
+def focus_spec(name) ; spec(name, focus: true) end
 
-def spec name, focus: false
+def spec(name, focus: false)
   test_name    = "test_#{name}"
   test_name    = "focus_#{test_name}" if focus
   root_context = { description: test_name,
@@ -63,10 +59,10 @@ def spec name, focus: false
                     befores: [], afters: [] }
   @current_context = root_context
   yield
-  parse_spec root_context, test_name
+  parse_spec(root_context, test_name)
 end
 
-def to_snake_case input
+def to_snake_case(input)
   words = []
   current_word = ""
 
