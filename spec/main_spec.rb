@@ -58,11 +58,11 @@ end
 
 spec "utilities function" do
   it :to_snake_case do |args, assert|
-    expect(to_snake_case("Hello World")).to eq "hello_world"
-    expect(to_snake_case("AnotherExampleString")).to eq "another_example_string"
+    expect(to_snake_case("Hello World")          ).to eq "hello_world"
+    expect(to_snake_case("AnotherExampleString") ).to eq "another_example_string"
     expect(to_snake_case("Snake Case Conversion")).to eq "snake_case_conversion"
-    expect(to_snake_case("ABC")).to eq "a_b_c"
-    expect(to_snake_case("hello_ World")).to eq "hello_world"
+    expect(to_snake_case("ABC")                  ).to eq "a_b_c"
+    expect(to_snake_case("hell_o_ World")         ).to eq "hello_world"
   end
 end
 
@@ -94,6 +94,10 @@ spec :boolean_matchers do
   it "be_falsy" do |args, assert|
     expect(false).to be_falsy
   end
+end
+
+class String
+  include StringTestFormater
 end
 
 run_tests
