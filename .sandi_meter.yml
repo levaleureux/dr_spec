@@ -1,0 +1,10 @@
+# .sandi_meter.yml
+
+# Liste des dossiers à analyser
+directories:
+  - lib
+  #- core
+
+# Dossier de sortie des résultats
+output_directory: metrics
+♥
