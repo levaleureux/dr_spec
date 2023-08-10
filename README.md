@@ -83,6 +83,7 @@ another.
 
 1. be_truthy: Verifies that a value evaluates to true in a boolean context.
 1. be_falsey: Verifies that a value evaluates to false in a boolean context.
+1. `be_nil` Verifies that a value evaluates to nil.
 
 ## Type
 

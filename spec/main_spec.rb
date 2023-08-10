@@ -101,6 +101,10 @@ spec :boolean_matchers do
     expect(false).to be_falsy
     expect(true).not_to be_falsy
   end
+  it "be_nil" do |args, assert|
+    expect(nil).to be_nil
+    expect(true).not_to be_nil
+  end
 end
 
 class String
