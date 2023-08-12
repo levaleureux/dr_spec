@@ -11,6 +11,9 @@ spec :example do
   it "works" do |args, assert|
     assert.equal!(5 + 5, 10)
   end
+  xit "it's a xit" do |args, assert|
+    assert.equal!(5 + 5, 10)
+  end
 end
 
 spec :another_spec do
