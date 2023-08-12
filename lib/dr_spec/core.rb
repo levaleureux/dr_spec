@@ -53,14 +53,21 @@ def it message, &block
   @current_context[:tests] << { description: message, block: block }
 end
 
+def xit message, &block
+  @current_context[:tests] << {
+    description:  "xit_#{message}",
+    block:        Proc.new { |args, assert| }
+  }
+end
+
 def focus_spec name ; spec name, focus: true end
 
 def spec name, focus: false
   test_name    = "test_#{name}"
   test_name    = "focus_#{test_name}" if focus
   root_context = { description: test_name,
-                    subcontexts: [], tests: [],
-                    befores: [], afters: [] }
+                   subcontexts: [], tests: [],
+                   befores: [], afters: [] }
   @current_context = root_context
   yield
   parse_spec root_context, test_name
@@ -80,7 +87,7 @@ def to_snake_case input
 
   words << current_word.downcase unless current_word.empty?
   res = words.join('_')
-  res.gsub("_ _", "_").gsub("___", "_")
+  res.gsub("'","_").gsub("_ _", "_").gsub("___", "_")
     .gsub("__","_").gsub("_ ", "_")
 end
 
