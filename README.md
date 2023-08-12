@@ -13,15 +13,11 @@ It try to mimic rspec.
 2. create or copy the `spec` folder
 3. on your `app/main.rb` or `app/test.rb` file add `require "lib/dr_spec/dragon_specs.rb"` at the bottom of file
 
-
-
-
 # Basic example
+
+To describe your `spec` or `it` block you can use a :symbole or a "string" with any case or spaces.
+
 ```ruby
-
-
-# you can use string with any case or spaces for spec and it block
-#
 spec "Numeric Comparison matchers" do
   it "be greater than" do |args, assert|
     expect(10).to be_greater_than 5
