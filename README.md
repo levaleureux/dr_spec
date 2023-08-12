@@ -7,6 +7,15 @@ It try to mimic rspec.
 
 🚧 **dr_spec is a work in progress! It works, but the interfaces may change.** 🚧
 
+# Install
+
+1. copy `lib/dr_spec` folder into your dragon ruby projects
+2. create or copy the `spec` folder
+3. on your `app/main.rb` or `app/test.rb` file add `require "lib/dr_spec/dragon_specs.rb"` at the bottom of file
+
+
+
+
 # Basic example
 ```ruby
 

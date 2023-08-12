@@ -64,3 +64,7 @@ end
 #                                end
 #          "]]"
 #        "]]"
+class String
+  include StringTestFormater
+end
+
