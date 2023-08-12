@@ -60,6 +60,16 @@ end
 
 ```
 
+# Structure
+
+1. spec
+2. context
+3. it
+4. xit
+
+it like rspec. If you want to use this lib it's maybe because you already know
+rspec. If you want more doc please open an issue ;)
+
 # Matchers
 
 **!🚧 ! NOTE check the implementation file as the doc is not 100% align with matchers
@@ -83,6 +93,7 @@ another.
 
 1. be_truthy: Verifies that a value evaluates to true in a boolean context.
 1. be_falsey: Verifies that a value evaluates to false in a boolean context.
+1. `be_nil` Verifies that a value evaluates to nil.
 
 ## Type
 

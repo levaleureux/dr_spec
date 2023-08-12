@@ -11,6 +11,9 @@ spec :example do
   it "works" do |args, assert|
     assert.equal!(5 + 5, 10)
   end
+  xit "it's a xit" do |args, assert|
+    assert.equal!(5 + 5, 10)
+  end
 end
 
 spec :another_spec do
@@ -93,6 +96,10 @@ spec :boolean_matchers do
   end
   it "be_falsy" do |args, assert|
     expect(false).to be_falsy
+  end
+  it "be_nil" do |args, assert|
+    expect(nil).to be_nil
+    expect(true).not_to be_nil
   end
 end
 
