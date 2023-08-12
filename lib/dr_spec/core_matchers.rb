@@ -19,4 +19,9 @@ class CoreMatcher
     boolean, text = positive_match? value
     assert.true! boolean, message(text)
   end
+
+  def unmatch? assert, value
+    boolean, text = positive_match? value
+    assert.false! boolean, "not_to : #{message(text)}"
+  end
 end

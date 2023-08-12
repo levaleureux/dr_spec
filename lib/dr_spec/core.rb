@@ -20,6 +20,11 @@ class Expectation
     self
   end
 
+  def not_to(matcher)
+    matcher.unmatch?(@assert, @subject)
+    self
+  end
+
   def and
     self
   end
@@ -57,7 +62,6 @@ def xit message, &block
 end
 
 def focus_spec name ; spec name, focus: true end
-
 
 def spec(name, focus: false)
   test_name    = "test_#{name}"
