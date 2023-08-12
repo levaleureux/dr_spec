@@ -7,12 +7,12 @@ class EqualMatcher < CoreMatcher
   def positive_match? actual
     [
       actual == @expected,
-      "#{actual} does not equal to #{@expected}"
+       "#{actual} is not equal #{@expected}"
     ]
   end
 end
 
-def eq(expected, fail_with: "")
-  EqualMatcher.new(expected, fail_with)
+def eq expected, fail_with: ""
+  EqualMatcher.new expected, fail_with
 end
 

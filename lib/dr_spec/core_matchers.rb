@@ -20,8 +20,8 @@ class CoreMatcher
     assert.true! boolean, message(text)
   end
 
-  def not_match? assert, value
+  def unmatch? assert, value
     boolean, text = positive_match? value
-    assert.false! boolean, "Not to: #{message(text)}"
+    assert.false! boolean, "not_to : #{message(text)}"
   end
 end

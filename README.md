@@ -65,6 +65,16 @@ end
 
 ```
 
+# Structure
+
+1. spec
+2. context
+3. it
+4. xit
+
+it like rspec. If you want to use this lib it's maybe because you already know
+rspec. If you want more doc please open an issue ;)
+
 # Matchers
 
 **!🚧 ! NOTE check the implementation file as the doc is not 100% align with matchers
@@ -132,25 +142,6 @@ you can use grip to preview your markdown.
 
 ```
 
-# Metrics
-
-This project use ![sandi_meter ](https://github.com/makaroni4/sandi_meter)
-
-after `bundle install` the gem
-use this command
-```
-sandi_meter -p lib -g -o metrics
-# or
-bundle exec sandi_meter -p lib -g -o metrics
-```
-
-For this project the rule is to always be at 100% metrics.
-Of course when we introduce new metrics it can take some time to rich 100%
-But once it's done. No regression.
-
-This can be consider as an extrem choice but after 16 years of ruby,
-This is definitly what save my week-ends and save my sport time so ...
-it's open-source you're free to fork.
 
 ## Thanks
 
