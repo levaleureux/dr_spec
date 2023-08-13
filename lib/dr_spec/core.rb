@@ -61,17 +61,33 @@ def xit message, &block
   }
 end
 
-def focus_spec name ; spec name, focus: true end
+def focus_spec name, metadata = {}, &block
+  spec name, metadata.merge(focus: true), &block
+end
 
-def spec(name, focus: false)
+def spec name, metadata = {}
+  metadata     = check_metadata(metadata)
+  on_do_puts_metadata(metadata)
   test_name    = "test_#{name}"
-  test_name    = "focus_#{test_name}" if focus
+  test_name    = "focus_#{test_name}" if metadata.focus
   root_context = { description: test_name,
                    subcontexts: [], tests: [],
                    befores: [], afters: [] }
   @current_context = root_context
   yield
   parse_spec(root_context, test_name)
+end
+
+def on_do_puts_metadata metadata
+  puts metadata
+end
+
+def check_metadata metadata
+  if metadata.keys.include? :focus
+    metadata
+  else
+    metadata.merge focus: false
+  end
 end
 
 def to_snake_case(input)
