@@ -36,6 +36,8 @@ require "lib/dr_spec/matchers/matchers.rb"
 require "lib/dr_spec/matchers/numeric_comparison_matchers.rb"
 require "lib/dr_spec/matchers/string_matchers.rb"
 require "lib/dr_spec/matchers/type_matchers.rb"
+require "lib/dr_spec/core/utils.rb"
+require "lib/dr_spec/core/blocks.rb"
 require "lib/dr_spec/core.rb"
 require "lib/dr_spec/tests_formater.rb"
 
