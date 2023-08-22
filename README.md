@@ -141,7 +141,11 @@ you can use grip to preview your markdown.
   grip chemin/vers/votre/fichier.md
 
 ```
+## Contributors
 
+thanks to 
+1. https://github.com/ekiru for the first PR.
+1. https://github.com/terrainoob  for opening some issue.
 
 ## Thanks
 
