@@ -17,6 +17,8 @@ spec :shared_example do
     end
 
     it_behaves_like "a point"
+
+    # TODO: how to test raise exeption
   end
 end
 
