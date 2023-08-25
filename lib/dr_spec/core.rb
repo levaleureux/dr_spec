@@ -4,7 +4,7 @@ end
 
 def spec name, metadata = {}
   metadata     = check_metadata(metadata)
-  #on_do_puts_metadata(metadata)
+  on_do_puts_metadata(metadata)
   test_name    = "test_#{name}"
   test_name    = "focus_#{test_name}" if metadata.focus
   root_context = { description: test_name,
@@ -16,6 +16,7 @@ def spec name, metadata = {}
 end
 
 def on_do_puts_metadata metadata
+  puts $gtk.cli_arguments
   puts metadata
 end
 
