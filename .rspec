@@ -1,0 +1,3 @@
+#--require spec_helper
+
+# TODO target the folder for ruby spec not the dr_spec folder
