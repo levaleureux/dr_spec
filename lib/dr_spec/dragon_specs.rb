@@ -36,6 +36,9 @@ require "lib/dr_spec/matchers/matchers.rb"
 require "lib/dr_spec/matchers/numeric_comparison_matchers.rb"
 require "lib/dr_spec/matchers/string_matchers.rb"
 require "lib/dr_spec/matchers/type_matchers.rb"
+require "lib/dr_spec/core/shared_example.rb"
+require "lib/dr_spec/core/utils.rb"
+require "lib/dr_spec/core/blocks.rb"
 require "lib/dr_spec/core.rb"
 require "lib/dr_spec/tests_formater.rb"
 
@@ -50,4 +53,5 @@ require 'lib/dr_spec/core/patch.rb'
 #
 require "spec/matchers_1_spec.rb"
 require "spec/matchers_2_spec.rb"
+require "spec/shared_examples_spec.rb"
 require "spec/main_spec.rb"
