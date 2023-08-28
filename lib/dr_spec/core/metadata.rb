@@ -4,30 +4,31 @@
 #
 class DrSpecMetadata
 
-  attr_writer :cli_arguments
+  attr_accessor :cli_arguments
+   attr_reader :data
 
-  def initialize metadata
+  def initialize data = {}
     #
-    @metadata      = check_metadata(metadata)
+    @data      = check data
     @cli_arguments = $gtk.cli_arguments
     puts_on_do
   end
 
   def puts_on_do
-    puts @metadata
+    puts @data
     puts @cli_arguments
   end
 
-  def check
-    if metadata.keys.include? :focus
-      return
+  def check data
+    if data.keys.include? :focus
+      data
     else
-      @metadata.merge! focus: false
+      data.merge! focus: false
     end
   end
 
   def test_name
-    if metadata.focus
+    if data.focus
       test_name    = "test_#{name}"
     else
       test_name    = "focus_#{test_name}"
