@@ -8,8 +8,10 @@ class DrSpecMetadata
   attr_reader :data
 
   def initialize data = {}
-    @data             = data
-    @spec_tags    = $gtk.cli_arguments["spec-tags"] || ""
+    #
+    @data      = data
+    args = $gtk.cli_arguments
+    @spec_tags = args[:"spec-tags"] || ""
     #puts_on_do
   end
 
@@ -29,9 +31,9 @@ class DrSpecMetadata
 
   def test_name
     if data.focus
-      test_name    = "test_#{name}"
+      test_name = "test_#{name}"
     else
-      test_name    = "focus_#{test_name}"
+      test_name = "focus_#{test_name}"
     end
   end
 
@@ -39,9 +41,10 @@ class DrSpecMetadata
 
   def compare_tags
     tags = @data.tags
+    puts tags
     if @spec_tags != "" && tags != nil
       @spec_tags.split(',').any? do |tag|
-        tags.include? tag
+        tags.map(&:to_s).include? tag.to_s
       end
     end
   end

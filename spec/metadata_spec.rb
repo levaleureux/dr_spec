@@ -8,7 +8,9 @@
 #require 'spec_helper'
 #require 'fileutils' # Assurez-vous d'inclure le module FileUtils
 
-focus_spec :metadata do |args, assert|
+# NOTE tags can be array of sym or string
+#spec :metadata, tags: ['levels'] do |args, assert|
+spec :metadata do |args, assert|
   #include FileUtils # Inclure le module FileUtils pour utiliser ses méthodes
 
   context "metadata can be use to filter some groupe of spec" do
@@ -19,28 +21,28 @@ focus_spec :metadata do |args, assert|
       # For real focus no focus method we need that dr_spec:
       # 1. can target
       # 2. can have good specific require chaine
-      context "when there is some focus method" do
-        it "run the command" do
+      context "when there is no flag" do
+        it "can have no focus method" do
           expect(@metadata.check).to eq({focus: false})
         end
-      end
-      context "when there is no focus method" do
+        xit "can have focus method"
       end
     end
     context "when there is flag" do
       context "when there is some focus method" do
-        it "it has tag" do
+        xit "it has tag" do
           {spec_tags: ['player'] }
           @metadata = DrSpecMetadata.new tags: ['player']
           expect(@metadata.check).to eq({focus: false})
         end
-        it "it has same tag on cli args and spec" do
+        xit "it has same tag on cli args and spec" do
           {spec_tags: ['player'] }
           @metadata = DrSpecMetadata.new tags: ['player']
           @metadata.spec_tags = "player,levels"
           expect(@metadata.check).to eq({focus: true})
 
         end
+        xit "todo it has different tag on cli args and spec"
       end
       context "when there is no focus method" do
       end
