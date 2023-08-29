@@ -15,14 +15,13 @@ focus_spec :metadata do |args, assert|
     context "when there is no flag" do
       before do |args, assert|
         @metadata = DrSpecMetadata.new
-        puts @metadata.cli_arguments.green
       end
       # For real focus no focus method we need that dr_spec:
       # 1. can target
       # 2. can have good specific require chaine
       context "when there is some focus method" do
         it "run the command" do
-          expect(@metadata.data).to eq({focus: false})
+          expect(@metadata.check).to eq({focus: false})
         end
       end
       context "when there is no focus method" do
@@ -30,10 +29,17 @@ focus_spec :metadata do |args, assert|
     end
     context "when there is flag" do
       context "when there is some focus method" do
-        it "run the command" do
-          {spec_tag: ['player'] }
-          @metadata = DrSpecMetadata.new spec_tag: ['player']
-          expect(@metadata.data).to eq({focus: false})
+        it "it has tag" do
+          {spec_tags: ['player'] }
+          @metadata = DrSpecMetadata.new tags: ['player']
+          expect(@metadata.check).to eq({focus: false})
+        end
+        it "it has same tag on cli args and spec" do
+          {spec_tags: ['player'] }
+          @metadata = DrSpecMetadata.new tags: ['player']
+          @metadata.spec_tags = "player,levels"
+          expect(@metadata.check).to eq({focus: true})
+
         end
       end
       context "when there is no focus method" do

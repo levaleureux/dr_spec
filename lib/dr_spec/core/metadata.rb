@@ -4,26 +4,26 @@
 #
 class DrSpecMetadata
 
-  attr_accessor :cli_arguments
-   attr_reader :data
+  attr_accessor :spec_tags
+  attr_reader :data
 
   def initialize data = {}
-    #
-    @data      = check data
-    @cli_arguments = $gtk.cli_arguments
-    puts_on_do
+    @data             = data
+    @spec_tags    = $gtk.cli_arguments["spec-tags"] || ""
+    #puts_on_do
   end
 
   def puts_on_do
     puts @data
+    puts "@cli_arguments".red
     puts @cli_arguments
   end
 
-  def check data
-    if data.keys.include? :focus
-      data
+  def check
+    if data.keys.include?(:focus) || compare_tags
+      {focus: true}
     else
-      data.merge! focus: false
+      {focus: false}
     end
   end
 
@@ -35,4 +35,14 @@ class DrSpecMetadata
     end
   end
 
+  private
+
+  def compare_tags
+    tags = @data.tags
+    if @spec_tags != "" && tags != nil
+      @spec_tags.split(',').any? do |tag|
+        tags.include? tag
+      end
+    end
+  end
 end
