@@ -10,7 +10,7 @@ class DrSpecMetadata
   def initialize data = {}
     #
     @data      = data
-    args = $gtk.cli_arguments
+    args       = $gtk.cli_arguments
     @spec_tags = args[:"spec-tags"] || ""
     #puts_on_do
   end
@@ -41,7 +41,6 @@ class DrSpecMetadata
 
   def compare_tags
     tags = @data.tags
-    puts tags
     if @spec_tags != "" && tags != nil
       @spec_tags.split(',').any? do |tag|
         tags.map(&:to_s).include? tag.to_s

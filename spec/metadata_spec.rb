@@ -11,8 +11,6 @@
 # NOTE tags can be array of sym or string
 #spec :metadata, tags: ['levels'] do |args, assert|
 spec :metadata do |args, assert|
-  #include FileUtils # Inclure le module FileUtils pour utiliser ses méthodes
-
   context "metadata can be use to filter some groupe of spec" do
     context "when there is no flag" do
       before do |args, assert|
@@ -40,7 +38,6 @@ spec :metadata do |args, assert|
           @metadata = DrSpecMetadata.new tags: ['player']
           @metadata.spec_tags = "player,levels"
           expect(@metadata.check).to eq({focus: true})
-
         end
         xit "todo it has different tag on cli args and spec"
       end
