@@ -4,34 +4,47 @@
 #
 class DrSpecMetadata
 
-  attr_writer :cli_arguments
+  attr_accessor :spec_tags
+  attr_reader :data
 
-  def initialize metadata
+  def initialize data = {}
     #
-    @metadata      = check_metadata(metadata)
-    @cli_arguments = $gtk.cli_arguments
-    puts_on_do
+    @data      = data
+    args       = $gtk.cli_arguments
+    @spec_tags = args[:"spec-tags"] || ""
+    #puts_on_do
   end
 
   def puts_on_do
-    puts @metadata
+    puts @data
+    puts "@cli_arguments".red
     puts @cli_arguments
   end
 
   def check
-    if metadata.keys.include? :focus
-      return
+    if data.keys.include?(:focus) || compare_tags
+      {focus: true}
     else
-      @metadata.merge! focus: false
+      {focus: false}
     end
   end
 
   def test_name
-    if metadata.focus
-      test_name    = "test_#{name}"
+    if data.focus
+      test_name = "test_#{name}"
     else
-      test_name    = "focus_#{test_name}"
+      test_name = "focus_#{test_name}"
     end
   end
 
+  private
+
+  def compare_tags
+    tags = @data.tags
+    if @spec_tags != "" && tags != nil
+      @spec_tags.split(',').any? do |tag|
+        tags.map(&:to_s).include? tag.to_s
+      end
+    end
+  end
 end

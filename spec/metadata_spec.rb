@@ -8,36 +8,38 @@
 #require 'spec_helper'
 #require 'fileutils' # Assurez-vous d'inclure le module FileUtils
 
-spec :metadata do
-  #include FileUtils # Inclure le module FileUtils pour utiliser ses méthodes
-
+# NOTE tags can be array of sym or string
+#spec :metadata, tags: ['levels'] do |args, assert|
+spec :metadata do |args, assert|
   context "metadata can be use to filter some groupe of spec" do
-    let(:command){"../dragonruby . --eval app/tests.rb --no-tick #{tag_filter}"}
     context "when there is no flag" do
-      let(:tag_filter){""}
-      before(:each) do
+      before do |args, assert|
+        @metadata = DrSpecMetadata.new
       end
       # For real focus no focus method we need that dr_spec:
       # 1. can target
       # 2. can have good specific require chaine
-      context "when there is some focus method" do
-        it "run the command" do
-          system "echo '#{command}'"
-          system command
-          system "command done"
+      context "when there is no flag" do
+        it "can have no focus method" do
+          expect(@metadata.check).to eq({focus: false})
         end
-      end
-      context "when there is no focus method" do
+        xit "can have focus method"
       end
     end
     context "when there is flag" do
-      let(:tag_filter){"spec-focus-tags player,levels"}
       context "when there is some focus method" do
-        it "run the command" do
-          system "echo '#{command}'"
-          system command
-          system "command done"
+        xit "it has tag" do
+          {spec_tags: ['player'] }
+          @metadata = DrSpecMetadata.new tags: ['player']
+          expect(@metadata.check).to eq({focus: false})
         end
+        xit "it has same tag on cli args and spec" do
+          {spec_tags: ['player'] }
+          @metadata = DrSpecMetadata.new tags: ['player']
+          @metadata.spec_tags = "player,levels"
+          expect(@metadata.check).to eq({focus: true})
+        end
+        xit "todo it has different tag on cli args and spec"
       end
       context "when there is no focus method" do
       end

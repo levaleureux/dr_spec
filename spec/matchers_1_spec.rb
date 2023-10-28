@@ -1,7 +1,8 @@
 # String Matchers
 #
 #focus_spec :string_matchers, tags: [:players] do
-spec :string_matchers, tags: [:players] do
+#spec :string_matchers, tags: [:player] do
+spec :string_matchers do
   #it "checks if a string starts with a specific prefix" do |args, assert|
   it "start_with" do |args, assert|
 
