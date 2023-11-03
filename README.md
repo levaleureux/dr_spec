@@ -7,13 +7,66 @@ It try to mimic rspec.
 
 🚧 **dr_spec is a work in progress! It works, but the interfaces may change.** 🚧
 
-# Install
+## Install
 
-1. copy `lib/dr_spec` folder into your dragon ruby projects
-2. create or copy the `spec` folder
-3. on your `app/main.rb` or `app/test.rb` file add `require "lib/dr_spec/dragon_specs.rb"` at the bottom of file
+### Manually
 
-# Basic example
+1. copy `lib/dr_spec` folder into your dragon ruby project.
+2. on your `app/main.rb` or `app/test.rb` file add `require "lib/dr_spec/dragon_specs.rb"` at the bottom of the file.
+
+That's it! Now you can write specs for your app using `dr_spec`.
+
+### Using `smaug`
+
+If you're using `smaug` to manage dependencies, you can install `dr_spec` by adding it to your `Smaug.toml`:
+
+```toml
+dr_spec = { repo = "https://github.com/levaleureux/dr_spec" }
+```
+
+Then simply run `smaug install` and add `require "smaug/dr_spec/lib/dr_spec/dragon_specs`
+to your `app/main.rb` or `app/test.rb` file.
+
+## Setup
+
+Setting up and running your specs is easy. After you followed the installation instruction above, you're ready to create
+your specs entrypoint file. This is normally `app/main.rb` or `app/test.rb`, but you can also have it in the `spec` folder if you prefer to keep it separate from your app code.
+
+```ruby
+# spec/main.rb
+require "lib/dr_spec/dragon_specs.rb" # or if you're using smaug: require 'smaug/dr_spec/lib/dr_spec/dragon_specs'
+
+spec "Setup specs" do
+  it "works" do
+    expect(true).to be_truthy
+  end
+end
+```
+
+## Running specs
+
+### With manual install
+
+If you have installed `dr_spec` manually into your dragonruby project, you should have the `dragonruby` executable in
+the same project folder. To run the specs, simply run:
+
+```bash
+./dragonruby . --test spec/main.rb`
+```
+
+Remember to replace `spec/main.rb` if you chose a different spec's entrypoint file.
+
+### With smaug
+
+If you are using smaug, you can also use it to run specs:
+
+```bash
+smaug run --test spec/main.rb
+```
+
+## Usage
+
+### Basic example
 
 To describe your `spec` or `it` block you can use a :symbole or a "string" with any case or spaces.
 
@@ -65,7 +118,7 @@ end
 
 ```
 
-# Structure
+### Structure
 
 1. spec
 2. context
@@ -75,14 +128,14 @@ end
 it like rspec. If you want to use this lib it's maybe because you already know
 rspec. If you want more doc please open an issue ;)
 
-# Matchers
+## Matchers
 
 **!🚧 ! NOTE check the implementation file as the doc is not 100% align with matchers
 names yet**
 
 dr_spec try to replicate some commonly used standard matchers in RSpec:
 
-## Equality
+### Equality
 
 `eq`: Verifies that two values are equal.
 <!--
@@ -94,40 +147,40 @@ dr_spec try to replicate some commonly used standard matchers in RSpec:
 another.
 1. be <, be <=: Verifies that a value is less (or less or equal) than another.
 
-## Boolean
+### Boolean
 
 1. be_truthy: Verifies that a value evaluates to true in a boolean context.
 1. be_falsey: Verifies that a value evaluates to false in a boolean context.
 1. `be_nil` Verifies that a value evaluates to nil.
 
-## Type
+### Type
 
 1. be_a(type) or be_an(type): Verifies that the object is an instance of the
 specified type.
 1. be_instance_of(type): Verifies that the object is an exact instance of the
 specified type.
 
-## Collection Content
+### Collection Content
 
 1. include(element): Verifies that an element is included in a collection.
 1. match_array(array): Verifies that the collection is equivalent to the specified
 array.
 
-## String
+### String
 
 1. start_with(string): Verifies that a string starts with the specified text.
 1. end_with(string): Verifies that a string ends with the specified text.
 1. include(string): Verifies that a string contains the specified text.
 
 
-# Outputs
+## Outputs
 
 There is on this project a will to make a very fast and readable output
 
 <img src="image.png" alt="some output" width="300">
 
 
-# Improve de doc
+## Improve de doc
 
 If you want to help on the doc of this project.
 you can use grip to preview your markdown.
