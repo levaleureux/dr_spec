@@ -32,3 +32,5 @@ end
 def be_kind_of(expected, fail_with: "")
   BeKindOfMatcher.new(expected, fail_with)
 end
+alias be_a be_kind_of
+alias be_an be_kind_of
