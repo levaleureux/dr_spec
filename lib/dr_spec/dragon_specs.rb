@@ -28,6 +28,22 @@ def run_specs
   end
 end
 
+def require_specs(current_dir = 'spec')
+  files = $gtk.exec("ls #{current_dir}").split("\n")
+  return unless files.is_a?(Array)
+
+  files.each do |file|
+    path, ext = file.split('.')
+    if ext
+      require "#{current_dir}/#{path}" if path.end_with?('_spec')
+    else
+      require_specs("#{current_dir}/#{path}")
+    end
+  end
+rescue
+  puts 'Could not auto-load specs. Currently only Linux and macOS are supported. Are you running on Windows?'
+end
+
 require_relative "core_matchers.rb"
 #
 require_relative "matchers/boolean_matchers.rb"
@@ -47,11 +63,4 @@ require_relative "tests_formater.rb"
 # this must be required last
 require_relative "core/patch.rb"
 
-# require your spec here
-#
-# last spec must contain run_specs call
-#
-# require "spec/matchers_1_spec.rb"
-# require "spec/matchers_2_spec.rb"
-# require "spec/shared_examples_spec.rb"
-# require "spec/main_spec.rb"
+require_specs
