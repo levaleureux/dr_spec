@@ -155,7 +155,7 @@ another.
 
 ### Type
 
-1. be_a(type) or be_an(type): Verifies that the object is an instance of the
+1. be_kind_of(type) (also aliased as be_a or be_an): Verifies that the object is an instance of the
 specified type.
 1. be_instance_of(type): Verifies that the object is an exact instance of the
 specified type.
