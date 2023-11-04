@@ -12,6 +12,11 @@ spec :context do
       it 'has correct inner context' do
         expect(@inner_context).to eq 'inner context 1'
       end
+
+      it 'generates the correct test_name' do
+        test_name = caller[0].split(' ').last
+        expect(test_name).to eq 'test_context_outer_context_1_inner_context_1_generates_the_correct_test_name'
+      end
     end
   end
 
@@ -27,6 +32,11 @@ spec :context do
 
       it 'has correct inner context' do
         expect(@inner_context).to eq 'inner context 2'
+      end
+
+      it 'generates the correct test_name' do
+        test_name = caller[0].split(' ').last
+        expect(test_name).to eq 'test_context_outer_context_2_inner_context_2_generates_the_correct_test_name'
       end
     end
   end
