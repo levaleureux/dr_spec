@@ -21,3 +21,22 @@ requires = []
 [dragonruby]
 version = "5.9"
 edition = "standard"
+
+## TEST APP Section
+
+[project]
+# The name of your game's executable. This should only contain a-z, A-Z, 0-9, _ or -.
+name = "test_app"
+# The game's title. This will show up in the tile bar of your executable.
+title = "DR spec Test App"
+version = "0.1.0"
+authors = ["My Name <todo@example.com>"]
+icon = "metadata/icon.png"
+compile_ruby = false
+
+[itch]
+# The Project URL you set when you created the game on Itch.io. https://my-username.itch.io/my-game.
+# This will also be the name of your build files, so fill it out even if you aren't uploading to Itch.io.
+url = "todo-change-me"
+# Your username on Itch.io.
+username = "todo-change-me"

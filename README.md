@@ -43,6 +43,13 @@ spec "Setup specs" do
 end
 ```
 
+### Organising specs
+
+You can organise specs into different files and put them in any folder structure that makes sense for your app.
+Just remember to require all spec files in your main spec entrypoint file (after requiring dr_spec).
+
+If you're on macOS or Linux, `dr_spec` will automatically require all files under `spec/**` that end with `_spec.rb`.
+
 ## Running specs
 
 ### With manual install
