@@ -40,7 +40,8 @@ def require_specs(current_dir = 'spec')
       require_specs("#{current_dir}/#{path}")
     end
   end
-rescue
+rescue => e
+  puts "Error: #{e.message} at #{e.backtrace[0]}"
   puts 'Could not auto-load specs. Currently only Linux and macOS are supported. Are you running on Windows?'
 end
 
