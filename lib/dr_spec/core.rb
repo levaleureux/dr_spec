@@ -33,8 +33,8 @@ def parse_spec(context, test_name)
     resolve_current_spec_node context, test_name, test
   end
   context[:subcontexts].each do |subcontext|
-    test_name = "#{test_name}_#{subcontext[:description]}"
-    parse_spec(subcontext, test_name)
+    new_test_name = "#{test_name}_#{subcontext[:description]}"
+    parse_spec(subcontext, new_test_name)
   end
 end
 

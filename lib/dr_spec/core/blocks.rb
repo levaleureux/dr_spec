@@ -1,8 +1,8 @@
 def context(description, &block)
   subcontext = { description: description, subcontexts: [],
                  tests: [],
-                 befores: @current_context[:befores],
-                 afters:  @current_context[:afters] }
+                 befores: @current_context[:befores].dup,
+                 afters:  @current_context[:afters].dup }
   @current_context[:subcontexts] << subcontext
   previous_context = @current_context
   @current_context = subcontext
