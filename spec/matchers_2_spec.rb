@@ -49,8 +49,11 @@ spec :another_spec do
     after do |args, assert|
       puts "after the_first_context"
       puts @a
-      # TODO @a is 26 and should be 4 there is here a scope issue
-      #assert.equal! @a, 4, "nope 4"
+      # FIX #53: @a was 26 in old architecture (scope leak from context_3).
+      # Now each test has its own ExampleContext:
+      #   - expectation_3's after sees @a=12 (only modified by its own it block)
+      #   - expectation_4's after sees @a=26 (modified by inner after, expected)
+      # See spec/architecture_spec.rb for isolation proof.
     end
   end
 

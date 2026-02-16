@@ -1,37 +1,43 @@
-#
-# filter the metadata.
-# It's usefull to know if a test is focus or not
-#
-class DrSpecMetadata
+module DrSpec
+  class Metadata
+    def initialize(hash = {})
+      @data = check_defaults(hash)
+    end
 
-  attr_writer :cli_arguments
+    def focused?
+      @data[:focus] == true
+    end
 
-  def initialize metadata
-    #
-    @metadata      = check_metadata(metadata)
-    @cli_arguments = $gtk.cli_arguments
-    puts_on_do
-  end
+    def focus
+      merge(focus: true)
+    end
 
-  def puts_on_do
-    puts @metadata
-    puts @cli_arguments
-  end
+    def tags
+      @data[:tags] || []
+    end
 
-  def check
-    if metadata.keys.include? :focus
-      return
-    else
-      @metadata.merge! focus: false
+    def [](key)
+      @data[key]
+    end
+
+    def merge(other)
+      DrSpec::Metadata.new(@data.merge(other))
+    end
+
+    def keys
+      @data.keys
+    end
+
+    def to_h
+      @data.dup
+    end
+
+    private
+
+    def check_defaults(hash)
+      hash = hash.dup
+      hash[:focus] = false unless hash.keys.include?(:focus)
+      hash
     end
   end
-
-  def test_name
-    if metadata.focus
-      test_name    = "test_#{name}"
-    else
-      test_name    = "focus_#{test_name}"
-    end
-  end
-
 end

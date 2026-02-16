@@ -5,5 +5,11 @@ puts "Test are on run"
 #require "app/component/game.rb"
 require "lib/dr_spec/dragon_specs.rb"
 
+require "spec/matchers_1_spec.rb"
+require "spec/matchers_2_spec.rb"
+require "spec/shared_examples_spec.rb"
+require "spec/architecture_spec.rb"
+require "spec/main_spec.rb"
+
 puts "Test where run"
 puts $gtk.cli_arguments

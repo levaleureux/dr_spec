@@ -11,6 +11,7 @@ def run_specs
   puts "💨 running tests"
   $gtk.reset 100
   $gtk.log_level = :on
+  DrSpec::World.instance.build_test_methods!
   $gtk.tests.start
 
   if $gtk.tests.failed.any?
@@ -36,10 +37,14 @@ require_relative "matchers/matchers.rb"
 require_relative "matchers/numeric_comparison_matchers.rb"
 require_relative "matchers/string_matchers.rb"
 require_relative "matchers/type_matchers.rb"
-require_relative "core/shared_example.rb"
 require_relative "core/utils.rb"
-require_relative "core/blocks.rb"
-require_relative "core.rb"
+require_relative "core/configuration.rb"
+require_relative "core/metadata.rb"
+require_relative "core/example_group.rb"
+require_relative "core/example_context.rb"
+require_relative "core/example.rb"
+require_relative "core/world.rb"
+require_relative "core/dsl.rb"
 require_relative "tests_formater.rb"
 
 # add requires for additional test files here
