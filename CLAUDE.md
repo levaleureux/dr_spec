@@ -163,22 +163,23 @@ bundle exec rspec spec_cli/
 |---------|------|
 | `master` | Production stable. **Ne jamais commiter directement dessus.** |
 | `develop` | Branche d'intégration. Les features sont mergées ici. |
-| `feature/*` | Branches de développement, créées depuis `develop`. |
+| `dr_spec_2` | **Branche de transition v2.** Cible de toutes les features pendant le refactor class-based. Sera mergée dans `develop` après validation communauté. |
+| `feature/*` | Branches de développement, créées depuis `dr_spec_2` (pendant la transition). |
 
-### Workflow
+### Workflow (pendant la transition dr_spec_2)
 
-1. Créer une branche `feature/xxx` depuis `develop`
+1. Créer une branche `feature/xxx` depuis `dr_spec_2`
 2. Développer et commiter sur la feature branch
-3. Push + PR vers `develop`
-4. Merge `develop` → `master` pour les releases
+3. Push + PR vers `dr_spec_2`
+4. Une fois la v2 validée par la communauté : merge `dr_spec_2` → `develop` → `master`
 
 ```bash
-# Nouvelle feature
-git checkout -b feature/ma_feature origin/develop
+# Nouvelle feature (pendant transition)
+git checkout -b feature/ma_feature origin/dr_spec_2
 
-# Une fois terminée, push et PR vers develop
+# Une fois terminée, push et PR vers dr_spec_2
 git push -u origin feature/ma_feature
-gh pr create --base develop
+gh pr create --base dr_spec_2
 ```
 
 **IMPORTANT** : ne jamais commiter ni push directement sur `master`. Toujours passer par `feature/* → develop → master`.

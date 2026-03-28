@@ -7,6 +7,27 @@ It try to mimic rspec.
 
 🚧 **dr_spec is a work in progress! It works, but the interfaces may change.** 🚧
 
+## dr_spec 2.0 — Transition Branch
+
+The `dr_spec_2` branch is the **active development branch** for the next major version of dr_spec. It contains a full rewrite to a class-based architecture (replacing the previous closure-based approach) that fixes long-standing scope isolation issues.
+
+### What's changing
+
+- **Class-based architecture**: 2-pass system (Build → Run) with `World`, `ExampleGroup`, `Example`, `ExampleContext`
+- **Proper test isolation**: Each test runs in its own fresh `ExampleContext` — no more shared state leaking between tests
+- **Scope bug fix**: Resolves [#53](https://github.com/levaleureux/dr_spec/issues/53)
+
+### Branch workflow during transition
+
+```
+feature/* ──→ dr_spec_2 ──→ develop ──→ master
+              (staging)     (after community testing)
+```
+
+All new features and fixes target `dr_spec_2`. Once the community has validated the new architecture, `dr_spec_2` will be merged into `develop`, then released to `master`.
+
+**Want to help test?** Check out the `dr_spec_2` branch and run the specs against your project. Feedback welcome via [issues](https://github.com/levaleureux/dr_spec/issues).
+
 ## Install
 
 ### Manually
