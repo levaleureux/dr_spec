@@ -23,14 +23,14 @@ def context(description, &block)
   world.pop_group
 end
 
-def it(message, &block)
+def specify(message, &block)
   world = DrSpec::World.instance
   group = world.current_group
   example = DrSpec::Example.new(message, group: group, block: block)
   group.add_example(example)
 end
 
-def xit(message, &block)
+def xspecify(message, &block)
   world = DrSpec::World.instance
   group = world.current_group
   noop  = Proc.new { |args, assert| }

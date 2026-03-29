@@ -8,7 +8,7 @@
 # assert.int!
 #
 spec :example do
-  it "works" do |args, assert|
+  specify "works" do |args, assert|
     assert.equal!(5 + 5, 10)
   end
 end
@@ -20,7 +20,7 @@ spec :another_spec do
       @a = 4
     end
 
-    it "expectation_3" do |args, assert|
+    specify "expectation_3" do |args, assert|
       puts "I'm the num 3"
       puts @a = @a * 3
       expect(@a)
@@ -33,7 +33,7 @@ spec :another_spec do
       before do
         @b = 5
       end
-      it "expectation_4" do |args, assert|
+      specify "expectation_4" do |args, assert|
         puts "I'm the num 4"
         puts @a = @a * 5 + @b
         assert.equal! @a, 25, "nope 25"
@@ -60,7 +60,7 @@ spec :another_spec do
 end
 
 spec "utilities function" do
-  it :to_snake_case do |args, assert|
+  specify :to_snake_case do |args, assert|
     expect(to_snake_case("Hello World")          ).to eq "hello_world"
     expect(to_snake_case("AnotherExampleString") ).to eq "another_example_string"
     expect(to_snake_case("Snake Case Conversion")).to eq "snake_case_conversion"
@@ -74,19 +74,19 @@ end
 #
 #
 spec "Numeric Comparison matchers" do
-  it "be greater than" do |args, assert|
+  specify "be greater than" do |args, assert|
     expect(10).to be_greater_than 5
     expect(10).not_to be_greater_than 10
   end
-  it "be_greater_than_or_equal_to" do |args, assert|
+  specify "be_greater_than_or_equal_to" do |args, assert|
     expect(10).to be_greater_than_or_equal_to 10
     expect(10).not_to be_greater_than_or_equal_to 11 # ???? TODO test in deep
   end
-  it "be_less_than" do |args, assert|
+  specify "be_less_than" do |args, assert|
     expect(5).to be_less_than 10
     expect(5).not_to be_less_than 4
   end
-  it "be_less_than_or_equal_to" do |args, assert|
+  specify "be_less_than_or_equal_to" do |args, assert|
     expect(5).to be_less_than_or_equal_to 5
     expect(5).not_to be_less_than_or_equal_to 4
   end
@@ -96,15 +96,15 @@ end
 #
 #
 spec :boolean_matchers do
-  it "be_truthy" do |args, assert|
+  specify "be_truthy" do |args, assert|
     expect(true).to be_truthy
     expect(false).not_to be_truthy
   end
-  it "be_falsy" do |args, assert|
+  specify "be_falsy" do |args, assert|
     expect(false).to be_falsy
     expect(true).not_to be_falsy
   end
-  it "be_nil" do |args, assert|
+  specify "be_nil" do |args, assert|
     expect(nil).to be_nil
     expect(true).not_to be_nil
   end

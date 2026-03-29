@@ -58,7 +58,7 @@ your specs entrypoint file. This is normally `app/main.rb` or `app/test.rb`, but
 require "lib/dr_spec/dragon_specs.rb" # or if you're using smaug: require 'smaug/dr_spec/lib/dr_spec/dragon_specs'
 
 spec "Setup specs" do
-  it "works" do
+  specify "works" do
     expect(true).to be_truthy
   end
 end
@@ -93,27 +93,27 @@ To describe your `spec` or `it` block you can use a :symbole or a "string" with 
 
 ```ruby
 spec "Numeric Comparison matchers" do
-  it "be greater than" do |args, assert|
+  specify "be greater than" do |args, assert|
     expect(10).to be_greater_than 5
   end
-  it "be_greater_than_or_equal_to" do |args, assert|
+  specify "be_greater_than_or_equal_to" do |args, assert|
     expect(10).to be_greater_than_or_equal_to 10
   end
-  it "be_less_than" do |args, assert|
+  specify "be_less_than" do |args, assert|
     expect(5).to be_less_than 10
   end
-  it "be_less_than_or_equal_to" do |args, assert|
+  specify "be_less_than_or_equal_to" do |args, assert|
     expect(5).to be_less_than_or_equal_to 5
   end
 end
 
-# you can use symbol as spec and it desc
+# you can use symbol as spec and specify desc
 #
 spec :boolean_matchers do
-  it "be_truthy" do |args, assert|
+  specify "be_truthy" do |args, assert|
     expect(true).to be_truthy
   end
-  it :be_falsy do |args, assert|
+  specify :be_falsy do |args, assert|
     expect(false).to be_falsy
   end
 end
@@ -124,7 +124,7 @@ context "context_3" do
   before do
     @b = 5
   end
-  it "expectation_4" do |args, assert|
+  specify "expectation_4" do |args, assert|
     puts "I'm the num 4"
     puts @a = @a * 5 + @b
     assert.equal! @a, 25, "nope 25"
@@ -143,10 +143,12 @@ end
 
 1. spec
 2. context
-3. it
-4. xit
+3. specify (replaces `it` for DR 6.x+ / Ruby 3.4 compatibility)
+4. xspecify (pending, replaces `xit`)
 
-it like rspec. If you want to use this lib it's maybe because you already know
+> **Note:** `it` is a reserved keyword in Ruby 3.4+ (used by DragonRuby 6.x). Use `specify` instead. On older DR versions, `it` and `xit` are still available as aliases.
+
+Like rspec. If you want to use this lib it's maybe because you already know
 rspec. If you want more doc please open an issue ;)
 
 ## Matchers

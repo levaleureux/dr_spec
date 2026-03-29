@@ -1,10 +1,10 @@
 spec :shared_example do
   shared_examples "a point" do
-    it "has an x" do
+    specify "has an x" do
       expect(object.x).not_to be_nil
     end
 
-    it "has a y" do
+    specify "has a y" do
       expect(object.y).not_to be_nil
     end
   end
@@ -49,7 +49,7 @@ spec :include_examples do
   context "with the examples included" do
     include_examples "defines value to be 0"
 
-    it "defines value" do
+    specify "defines value" do
       expect(respond_to?(:value)).to eq(true)
       expect(value).to eq(0)
     end
