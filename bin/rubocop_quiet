@@ -1,0 +1,44 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# Wrapper quiet pour Rubocop
+# Output: 1 ligne succès ou résumé + offenses
+#
+# Succès: "Rubocop: 42 files, no offenses"
+# Échec:  "Rubocop: 3 offense(s)\n  app/foo.rb:12 ..."
+
+require "json"
+require "open3"
+
+stdout, _stderr, status = Open3.capture3(
+  "rubocop",
+  "app", "lib", "spec",
+  "--format", "json"
+)
+
+begin
+  result = JSON.parse(stdout)
+rescue JSON::ParserError => error
+  warn "Rubocop JSON error: #{error.message}"
+  exit 1
+end
+
+summary = result["summary"] || {}
+count = summary["offense_count"].to_i
+files = summary["target_file_count"].to_i
+
+if count.zero? && status.success?
+  puts "Rubocop: #{files} files, no offenses"
+  exit 0
+end
+
+puts "Rubocop: #{count} offense(s)"
+
+(result["files"] || []).each do |file|
+  file["offenses"]&.each do |o|
+    loc = "#{file['path']}:#{o.dig('location', 'line')}"
+    puts "  #{loc} [#{o['severity']&.chr&.upcase}]" \
+         " #{o['cop_name']}"
+  end
+end
+exit 1

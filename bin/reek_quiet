@@ -1,0 +1,39 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# Wrapper quiet pour Reek (non-bloquant)
+# Output: 1 ligne résumé
+#
+# OK:       "Reek: 0 warnings"
+# Warnings: "Reek: 20 warning(s) (non-blocking)"
+
+require "json"
+require "open3"
+
+stdout, _stderr, _status = Open3.capture3(
+  "reek",
+  "app", "lib",
+  "--format", "json"
+)
+
+begin
+  result = JSON.parse(stdout)
+rescue JSON::ParserError => error
+  warn "Reek JSON error: #{error.message}"
+  exit 1
+end
+
+warnings = result.is_a?(Array) ? result : []
+
+if warnings.empty?
+  puts "Reek: 0 warnings"
+  exit 0
+end
+
+puts "Reek: #{warnings.size} warning(s) (non-blocking)"
+warnings.each do |w|
+  lines = (w["lines"] || []).first
+  loc = "#{w['source']}:#{lines}"
+  puts "  #{loc} #{w['smell_type']}"
+end
+exit 0

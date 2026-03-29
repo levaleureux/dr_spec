@@ -1,0 +1,6 @@
+# Rubocop — disabled cops
+# Add cops here that are explicitly disabled with rationale.
+
+# DragonRuby uses its own module/require system
+Naming/FileName:
+  Enabled: false

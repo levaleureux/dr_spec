@@ -134,7 +134,10 @@ S
       #log "*** Passed"
       log " #{self.passed.length} ✅ test(s) passed       ".green.reverse_color
       #self.passed.each { |h| log "**** :#{h[:m]}" }
-      self.passed.each_with_index { |h,index| log " #{' ' if index < 9} #{index + 1} ✅ #{h[:m].to_s.split('_').drop(1).join('_') }".green }
+      self.passed.each_with_index do |h, index|
+        name = h[:m].to_s.split("_").drop(1).join("_")
+        log " #{' ' if index < 9} #{index + 1} ✅ #{name}".green
+      end
       #log "*** Inconclusive"
       if self.inconclusive.length > 0
         log_once :assertion_ok_note, <<-S
