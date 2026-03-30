@@ -1,15 +1,6 @@
-# Available assertions:
-# assert.true!
-# assert.false!
-# assert.equal!
-# assert.exception!
-# assert.includes!
-# assert.not_includes!
-# assert.int!
-#
 spec :example do
-  specify "works" do |args, assert|
-    assert.equal!(5 + 5, 10)
+  specify "works" do
+    expect(5 + 5).to eq 10
   end
 end
 
@@ -20,9 +11,8 @@ spec :another_spec do
       @a = 4
     end
 
-    specify "expectation_3" do |args, assert|
-      puts "I'm the num 3"
-      puts @a = @a * 3
+    specify "expectation_3" do
+      @a = @a * 3
       expect(@a)
         .to(eq 12, fail_with: "nope 12")
         .and
@@ -33,34 +23,26 @@ spec :another_spec do
       before do
         @b = 5
       end
-      specify "expectation_4" do |args, assert|
-        puts "I'm the num 4"
-        puts @a = @a * 5 + @b
-        assert.equal! @a, 25, "nope 25"
+      specify "expectation_4" do
+        @a = @a * 5 + @b
+        expect(@a).to eq 25
       end
-      after do |args, assert|
+      after do
         @b = 6
-        puts "after 4"
         @a = 4 * 5 + @b
-        assert.equal! @a, 26, "nope 25"
+        expect(@a).to eq 26
       end
     end
 
-    after do |args, assert|
-      puts "after the_first_context"
-      puts @a
-      # FIX #53: @a was 26 in old architecture (scope leak from context_3).
-      # Now each test has its own ExampleContext:
-      #   - expectation_3's after sees @a=12 (only modified by its own it block)
-      #   - expectation_4's after sees @a=26 (modified by inner after, expected)
-      # See spec/architecture_spec.rb for isolation proof.
+    after do
+      # FIX #53: each test has its own ExampleContext, no scope leak.
     end
   end
 
 end
 
 spec "utilities function" do
-  specify :to_snake_case do |args, assert|
+  specify :to_snake_case do
     expect(to_snake_case("Hello World")          ).to eq "hello_world"
     expect(to_snake_case("AnotherExampleString") ).to eq "another_example_string"
     expect(to_snake_case("Snake Case Conversion")).to eq "snake_case_conversion"
@@ -74,19 +56,19 @@ end
 #
 #
 spec "Numeric Comparison matchers" do
-  specify "be greater than" do |args, assert|
+  specify "be greater than" do
     expect(10).to be_greater_than 5
     expect(10).not_to be_greater_than 10
   end
-  specify "be_greater_than_or_equal_to" do |args, assert|
+  specify "be_greater_than_or_equal_to" do
     expect(10).to be_greater_than_or_equal_to 10
-    expect(10).not_to be_greater_than_or_equal_to 11 # ???? TODO test in deep
+    expect(10).not_to be_greater_than_or_equal_to 11
   end
-  specify "be_less_than" do |args, assert|
+  specify "be_less_than" do
     expect(5).to be_less_than 10
     expect(5).not_to be_less_than 4
   end
-  specify "be_less_than_or_equal_to" do |args, assert|
+  specify "be_less_than_or_equal_to" do
     expect(5).to be_less_than_or_equal_to 5
     expect(5).not_to be_less_than_or_equal_to 4
   end
@@ -96,15 +78,15 @@ end
 #
 #
 spec :boolean_matchers do
-  specify "be_truthy" do |args, assert|
+  specify "be_truthy" do
     expect(true).to be_truthy
     expect(false).not_to be_truthy
   end
-  specify "be_falsy" do |args, assert|
+  specify "be_falsy" do
     expect(false).to be_falsy
     expect(true).not_to be_falsy
   end
-  specify "be_nil" do |args, assert|
+  specify "be_nil" do
     expect(nil).to be_nil
     expect(true).not_to be_nil
   end

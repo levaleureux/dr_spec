@@ -47,7 +47,7 @@ module DrSpec
         group.each_example do |example|
           method_name = example.test_method_name
           Object.define_method(method_name) do |args, assert|
-            result = example.run(args, assert)
+            result = example.run(args)
             if result.passed?
               assert.ok!
             elsif result.failed?
