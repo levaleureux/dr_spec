@@ -33,7 +33,7 @@ end
 def xspecify(message, &block)
   world = DrSpec::World.instance
   group = world.current_group
-  noop  = Proc.new { |args, assert| }
+  noop  = Proc.new { }
   example = DrSpec::Example.new("xit_#{message}", group: group, block: noop, pending: true)
   group.add_example(example)
 end

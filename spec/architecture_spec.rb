@@ -2,16 +2,16 @@
 #
 spec :architecture_example_group do
   context "tree construction" do
-    specify "ExampleGroup has children and parent" do |args, assert|
+    specify "ExampleGroup has children and parent" do
       parent = DrSpec::ExampleGroup.new("parent")
       child  = DrSpec::ExampleGroup.new("child", parent: parent)
       parent.add_child(child)
-      assert.equal! child.parent, parent, "child should reference parent"
-      assert.equal! parent.children.length, 1, "parent should have 1 child"
-      assert.equal! parent.children[0], child, "parent's child should be the child"
+      expect(child.parent).to eq parent
+      expect(parent.children.length).to eq 1
+      expect(parent.children[0]).to eq child
     end
 
-    specify "full_description concatenates ancestor descriptions" do |args, assert|
+    specify "full_description concatenates ancestor descriptions" do
       root  = DrSpec::ExampleGroup.new("test_my_spec")
       mid   = DrSpec::ExampleGroup.new("when_something", parent: root)
       leaf  = DrSpec::ExampleGroup.new("and_nested", parent: mid)
@@ -22,7 +22,7 @@ spec :architecture_example_group do
   end
 
   context "collected_befores" do
-    specify "collects befores from root to leaf (parent first)" do |args, assert|
+    specify "collects befores from root to leaf (parent first)" do
       order = []
       root = DrSpec::ExampleGroup.new("root")
       root.add_before { order << :root }
@@ -33,10 +33,10 @@ spec :architecture_example_group do
 
       befores = grandchild.collected_befores
       befores.each { |b| b.call }
-      assert.equal! order, [:root, :child, :grandchild], "befores should run parent-first"
+      expect(order).to eq [:root, :child, :grandchild]
     end
 
-    specify "collected_afters runs from leaf to root" do |args, assert|
+    specify "collected_afters runs from leaf to root" do
       order = []
       root = DrSpec::ExampleGroup.new("root")
       root.add_after { order << :root }
@@ -45,7 +45,7 @@ spec :architecture_example_group do
 
       afters = child.collected_afters
       afters.each { |a| a.call }
-      assert.equal! order, [:child, :root], "afters should run child-first"
+      expect(order).to eq [:child, :root]
     end
   end
 end
@@ -57,14 +57,14 @@ spec :scope_isolation do
       @counter = 0
     end
 
-    specify "first test increments counter" do |args, assert|
+    specify "first test increments counter" do
       @counter += 10
-      assert.equal! @counter, 10, "counter should be 10"
+      expect(@counter).to eq 10
     end
 
-    specify "second test sees fresh counter (not 10)" do |args, assert|
+    specify "second test sees fresh counter (not 10)" do
       @counter += 1
-      assert.equal! @counter, 1, "counter should be 1, not 11 (isolated scope)"
+      expect(@counter).to eq 1
     end
   end
 
@@ -73,31 +73,28 @@ spec :scope_isolation do
       before do
         def helper_a; :a; end
       end
-      specify "can call helper_a" do |args, assert|
-        assert.equal! helper_a, :a, "helper_a should return :a"
+      specify "can call helper_a" do
+        expect(helper_a).to eq :a
       end
     end
 
     context "group B" do
-      specify "cannot see helper_a from group A" do |args, assert|
-        has_method = respond_to?(:helper_a)
-        assert.false! has_method, "helper_a should not be visible in group B"
+      specify "cannot see helper_a from group A" do
+        expect(respond_to?(:helper_a)).to be_falsy
       end
     end
   end
 end
 
 spec :world_introspection do
-  specify "World.instance has registered example groups" do |args, assert|
+  specify "World.instance has registered example groups" do
     world = DrSpec::World.instance
-    assert.true! world.example_groups.length > 0,
-      "World should have registered example groups"
+    expect(world.example_groups.length).to be_greater_than 0
   end
 
-  specify "World.instance has Metadata on groups" do |args, assert|
+  specify "World.instance has Metadata on groups" do
     world = DrSpec::World.instance
     group = world.example_groups.first
-    assert.true! group.metadata.is_a?(DrSpec::Metadata),
-      "group metadata should be a DrSpec::Metadata"
+    expect(group.metadata.is_a?(DrSpec::Metadata)).to be_truthy
   end
 end

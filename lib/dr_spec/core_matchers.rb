@@ -1,6 +1,3 @@
-# Boolean matchers
-#
-#
 class CoreMatcher
   def message custom_message
     if @fail_with == ""
@@ -15,13 +12,17 @@ class CoreMatcher
     @fail_with = fail_with
   end
 
-  def match? assert, value
+  def match? value
     boolean, text = positive_match? value
-    assert.true! boolean, message(text)
+    unless boolean
+      raise DrSpec::ExpectationFailed.new(message(text), actual: value, expected: @expected)
+    end
   end
 
-  def unmatch? assert, value
+  def unmatch? value
     boolean, text = positive_match? value
-    assert.false! boolean, "not_to : #{message(text)}"
+    if boolean
+      raise DrSpec::ExpectationFailed.new("not_to : #{message(text)}", actual: value, expected: @expected)
+    end
   end
 end

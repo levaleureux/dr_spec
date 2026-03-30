@@ -1,11 +1,7 @@
 module DrSpec
   class ExampleContext
-    def initialize(assert)
-      @assertion_wrapper = AssertionWrapper.new(assert)
-    end
-
     def expect(subject)
-      @assertion_wrapper.expect(subject)
+      Expectation.new(subject)
     end
   end
 end

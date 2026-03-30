@@ -2,29 +2,18 @@
 # NOTE if someone have a bettre name for this file please PR
 #
 #
-class AssertionWrapper
-  def initialize(assert)
-    @assert = assert
-  end
-
-  def expect(subject)
-    Expectation.new(subject, @assert)
-  end
-end
-
 class Expectation
-  def initialize(subject, assert)
+  def initialize(subject)
     @subject = subject
-    @assert = assert
   end
 
   def to(matcher)
-    matcher.match?(@assert, @subject)
+    matcher.match?(@subject)
     self
   end
 
   def not_to(matcher)
-    matcher.unmatch?(@assert, @subject)
+    matcher.unmatch?(@subject)
     self
   end
 
