@@ -22,12 +22,19 @@ module DrSpec
       "#{group.full_description}_#{@description}"
     end
 
-    def run(args, assert)
+    def run(args = nil, assert = nil)
+      return DrSpec::Result.new(self, status: :pending) if pending?
+
       ctx_class = Class.new(DrSpec::ExampleContext)
-      ctx = ctx_class.new(assert)
-      group.collected_befores.each { |b| ctx.instance_exec(args, assert, &b) }
-      ctx.instance_exec(args, assert, &@block) unless pending?
-      group.collected_afters.each { |a| ctx.instance_exec(args, assert, &a) }
+      ctx = ctx_class.new
+      begin
+        group.collected_befores.each { |b| ctx.instance_exec(args, assert, &b) }
+        ctx.instance_exec(args, assert, &@block)
+        group.collected_afters.each { |a| ctx.instance_exec(args, assert, &a) }
+        DrSpec::Result.new(self, status: :passed)
+      rescue DrSpec::ExpectationFailed => e
+        DrSpec::Result.new(self, status: :failed, error: e)
+      end
     end
   end
 end

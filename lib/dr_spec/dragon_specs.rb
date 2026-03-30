@@ -29,6 +29,8 @@ def run_specs
   end
 end
 
+require_relative "core/expectation_failed.rb"
+require_relative "core/result.rb"
 require_relative "core_matchers.rb"
 #
 require_relative "matchers/boolean_matchers.rb"
