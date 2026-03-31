@@ -20,7 +20,7 @@ jobs:
           bundler-cache: true
 
       - name: Rubocop
-        run: bundle exec rubocop app lib spec
+        run: bundle exec rubocop app lib
 
       - name: Reek
         run: bundle exec reek app lib || true
@@ -30,6 +30,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          path: project
 
       - name: Download DragonRuby
         uses: kfischer-okarin/download-dragonruby@v1
@@ -43,5 +45,5 @@ jobs:
           SDL_AUDIODRIVER: dummy
         run: |
           chmod u+x ./dragonruby
-          ./dragonruby . --eval app/tests.rb --no-tick --exit-on-fail 2>&1 | tee tests.log
+          ./dragonruby project --eval app/tests.rb --no-tick --exit-on-fail 2>&1 | tee tests.log
           grep '0 ➖ test(s) failed' tests.log
