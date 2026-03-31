@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches: [dr_spec_2, develop, master]
+  pull_request:
+    branches: [dr_spec_2, develop, master]
+
+jobs:
+  lint:
+    name: Rubocop & Reek
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+          bundler-cache: true
+
+      - name: Rubocop
+        run: bundle exec rubocop app lib spec
+
+      - name: Reek
+        run: bundle exec reek app lib || true
+
+  test:
+    name: dr_spec
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download DragonRuby
+        uses: kfischer-okarin/download-dragonruby@v1
+        with:
+          version: 'latest'
+          license_tier: 'standard'
+
+      - name: Run dr_spec
+        env:
+          SDL_VIDEODRIVER: dummy
+          SDL_AUDIODRIVER: dummy
+        run: |
+          chmod u+x ./dragonruby
+          ./dragonruby . --eval app/tests.rb --no-tick --exit-on-fail 2>&1 | tee tests.log
+          grep '0 ➖ test(s) failed' tests.log
