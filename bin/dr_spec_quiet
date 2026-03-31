@@ -8,9 +8,11 @@
 # Échec:  "dr_spec: 2 test(s) failed\n  🔴 test_name - reason"
 
 require "open3"
+require "timeout"
 
 DR_BIN = ENV["DRAGONRUBY_BIN"] || File.expand_path("../../../dragonruby-macos/dragonruby", __dir__)
 PROJECT = File.expand_path("..", __dir__)
+DR_TIMEOUT = Integer(ENV["DR_SPEC_TIMEOUT"] || 30)
 
 cmd = [
   DR_BIN, PROJECT,
@@ -19,7 +21,18 @@ cmd = [
   "--exit-on-fail"
 ]
 
-stdout, stderr, status = Open3.capture3(*cmd)
+stdout = stderr = ""
+status = nil
+begin
+  Timeout.timeout(DR_TIMEOUT) do
+    stdout, stderr, status = Open3.capture3(*cmd)
+  end
+rescue Timeout::Error
+  # Kill any stuck DragonRuby process
+  system("pkill -9 -f '#{DR_BIN}.*#{PROJECT}'")
+  puts "dr_spec: timeout after #{DR_TIMEOUT}s (DragonRuby did not exit)"
+  exit 1
+end
 output = stdout + stderr
 
 # Extract summary lines
