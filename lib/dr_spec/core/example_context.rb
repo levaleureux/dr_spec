@@ -1,7 +1,7 @@
 module DrSpec
   class ExampleContext
-    def expect(subject)
-      Expectation.new(subject)
+    def expect(subject = nil, &block)
+      Expectation.new(subject, &block)
     end
   end
 end

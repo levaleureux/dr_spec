@@ -153,47 +153,122 @@ rspec. If you want more doc please open an issue ;)
 
 ## Matchers
 
-**!🚧 ! NOTE check the implementation file as the doc is not 100% align with matchers
-names yet**
-
-dr_spec try to replicate some commonly used standard matchers in RSpec:
+dr_spec replicates commonly used RSpec matchers. All matchers support `to` and `not_to`, and accept an optional `fail_with:` parameter for custom error messages.
 
 ### Equality
 
-`eq`: Verifies that two values are equal.
-<!--
-`eql`: Verifies that two values are equal, taking type into account.
-## Numeric Comparison:
--->
+| Matcher | Description |
+|---------|-------------|
+| `eq(expected)` | Verifies that two values are equal |
 
-1. be >, be >=: Verifies that a value is greater (or greater or equal) than
-another.
-1. be <, be <=: Verifies that a value is less (or less or equal) than another.
+```ruby
+expect(1 + 1).to eq 2
+expect("foo").not_to eq "bar"
+```
+
+### Numeric Comparison
+
+| Matcher | Description |
+|---------|-------------|
+| `be_greater_than(n)` | Verifies value > n |
+| `be_greater_than_or_equal_to(n)` | Verifies value >= n |
+| `be_less_than(n)` | Verifies value < n |
+| `be_less_than_or_equal_to(n)` | Verifies value <= n |
+
+```ruby
+expect(10).to be_greater_than 5
+expect(5).to be_less_than_or_equal_to 5
+```
 
 ### Boolean
 
-1. be_truthy: Verifies that a value evaluates to true in a boolean context.
-1. be_falsey: Verifies that a value evaluates to false in a boolean context.
-1. `be_nil` Verifies that a value evaluates to nil.
+| Matcher | Description |
+|---------|-------------|
+| `be_truthy` | Verifies value is `true` |
+| `be_falsy` | Verifies value is falsy (`false` or `nil`) |
+| `be_nil` | Verifies value is `nil` |
+
+```ruby
+expect(true).to be_truthy
+expect(nil).to be_nil
+```
 
 ### Type
 
-1. be_a(type) or be_an(type): Verifies that the object is an instance of the
-specified type.
-1. be_instance_of(type): Verifies that the object is an exact instance of the
-specified type.
+| Matcher | Description |
+|---------|-------------|
+| `be_instance_of(klass)` | Verifies exact class match |
+| `be_kind_of(klass)` | Verifies class or ancestor match |
 
-### Collection Content
+```ruby
+expect("hello").to be_instance_of(String)
+expect(1).to be_kind_of(Numeric)
+```
 
-1. include(element): Verifies that an element is included in a collection.
-1. match_array(array): Verifies that the collection is equivalent to the specified
-array.
+### Collection
+
+| Matcher | Description |
+|---------|-------------|
+| `include(element)` | Verifies collection includes element |
+| `contain(element)` | Alias for `include` |
+| `contain_exactly(array)` | Verifies collection has same elements (any order) |
+| `include_elements_in_order(array)` | Verifies elements appear in order |
+| `have_size(n)` | Verifies collection size |
+| `be_empty` | Verifies collection is empty |
+
+```ruby
+expect([1, 2, 3]).to include 2
+expect([3, 1, 2]).to contain_exactly [1, 2, 3]
+expect([]).to be_empty
+```
 
 ### String
 
-1. start_with(string): Verifies that a string starts with the specified text.
-1. end_with(string): Verifies that a string ends with the specified text.
-1. include(string): Verifies that a string contains the specified text.
+| Matcher | Description |
+|---------|-------------|
+| `start_with(string)` | Verifies string starts with prefix |
+| `end_with(string)` | Verifies string ends with suffix |
+| `match(regex)` | Verifies string matches pattern |
+
+```ruby
+expect("hello world").to start_with "hello"
+expect("hello world").to end_with "world"
+```
+
+### Error
+
+| Matcher | Description |
+|---------|-------------|
+| `raise_error` | Verifies a block raises any error |
+| `raise_error(ErrorClass)` | Verifies a block raises a specific error class |
+
+```ruby
+expect { raise "boom" }.to raise_error
+expect { raise ArgumentError }.to raise_error(ArgumentError)
+expect { 1 + 1 }.not_to raise_error
+```
+
+### Object
+
+| Matcher | Description |
+|---------|-------------|
+| `respond_to(:method_name)` | Verifies object responds to a method |
+
+```ruby
+expect("hello").to respond_to(:length)
+expect([1, 2]).to respond_to(:push)
+```
+
+### Custom
+
+| Matcher | Description |
+|---------|-------------|
+| `satisfy { \|value\| ... }` | Verifies value satisfies a custom block |
+
+```ruby
+expect(10).to satisfy { |v| v > 5 }
+expect(42).to satisfy { |v| v.even? && v > 10 }
+```
 
 
 ## Outputs
