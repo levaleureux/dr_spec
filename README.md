@@ -85,6 +85,69 @@ If you are using smaug, you can also use it to run specs:
 smaug run --test spec/main.rb
 ```
 
+### In CI (GitHub Actions)
+
+DragonRuby is a commercial engine, so running tests in CI requires downloading the engine. Two options exist:
+
+- [kfischer-okarin/download-dragonruby](https://github.com/kfischer-okarin/download-dragonruby) — downloads DR using your license (requires `DRAGONRUBY_ITCH_API_KEY` secret)
+- [kfischer-okarin/dragonruby-for-ci](https://github.com/kfischer-okarin/dragonruby-for-ci) — open-source DR builds for CI (no license needed)
+
+#### Key points
+
+- **Headless mode**: Set `SDL_VIDEODRIVER=dummy` and `SDL_AUDIODRIVER=dummy` to run without a display
+- **Exit code**: DragonRuby always returns 0 — use `--exit-on-fail` and check the output for failures
+- **File conflicts**: Checkout your project in a subdirectory to avoid conflicts with files from the DR zip (e.g. `font.ttf`)
+
+#### Example workflow
+
+```yaml
+# .github/workflows/ci.yml
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+
+jobs:
+  test:
+    name: dr_spec
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: project
+
+      - name: Download DragonRuby
+        uses: kfischer-okarin/download-dragonruby@v1
+        with:
+          version: 'latest'
+          license_tier: 'standard'
+
+      - name: Run dr_spec
+        env:
+          SDL_VIDEODRIVER: dummy
+          SDL_AUDIODRIVER: dummy
+        run: |
+          chmod u+x ./dragonruby
+          ./dragonruby project --eval app/tests.rb --no-tick --exit-on-fail 2>&1 | tee tests.log
+          grep '0 ➖ test(s) failed' tests.log
+```
+
+You can also see dr_spec's own CI config as a working example: [`.github/workflows/ci.yml`](.github/workflows/ci.yml).
+
+#### Generic CI (non-GitHub)
+
+For any CI provider, the core commands are:
+
+```bash
+# Download and extract DragonRuby (adjust for your setup)
+export SDL_VIDEODRIVER=dummy
+export SDL_AUDIODRIVER=dummy
+chmod u+x ./dragonruby
+./dragonruby your-project --eval app/tests.rb --no-tick --exit-on-fail
+```
+
 ## Usage
 
 ### Basic example
