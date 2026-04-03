@@ -3,6 +3,8 @@
 A simple DSL and test runner DragonRuby Game Toolkit (DRGTK).
 It try to mimic rspec.
 
+🇫🇷 [Documentation en français](docs/fr/README.md)
+
 [New to writing tests? Check out this tutorial introducing the concept in DRGTK!](https://www.dragonriders.community/recipes/testing)
 
 🚧 **dr_spec is a work in progress! It works, but the interfaces may change.** 🚧
