@@ -3,17 +3,20 @@
 #
 #
 class Expectation
-  def initialize(subject)
+  def initialize(subject = nil, &block)
     @subject = subject
+    @block   = block
   end
 
   def to(matcher)
-    matcher.match?(@subject)
+    value = @block || @subject
+    matcher.match?(value)
     self
   end
 
   def not_to(matcher)
-    matcher.unmatch?(@subject)
+    value = @block || @subject
+    matcher.unmatch?(value)
     self
   end
 
