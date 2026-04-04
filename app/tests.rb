@@ -15,6 +15,7 @@ require "spec/hook_exception_spec.rb"
 require "spec/deep_nesting_spec.rb"
 require "spec/shared_examples_edge_spec.rb"
 require "spec/edge_cases_spec.rb"
+require "spec/runner_spec.rb"
 require "spec/tick_based_spec.rb"
 require "spec/main_spec.rb"
 
