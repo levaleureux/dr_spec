@@ -160,6 +160,13 @@ expect { methode_dangereuse }.to raise_error
 expect { 1 + 1 }.not_to raise_error
 ```
 
+## Limitations DragonRuby / mruby
+
+DragonRuby utilise mruby, pas CRuby. Quelques différences importantes :
+
+- **Pas de Regexp** : `Regexp` n'existe pas dans mruby. Le matcher `match` (regex) n'est pas utilisable. N'écrivez pas de tests avec `/pattern/`.
+- **`it` est réservé** : en Ruby 3.4+ (DragonRuby 6.x), `it` est un mot-clé. Utilisez `specify` à la place.
+
 ## Voir aussi
 
 - [Matchers](matchers.md) — référence complète

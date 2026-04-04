@@ -111,6 +111,14 @@ end
 `expect(value)` → `Expectation` → `.to(matcher)` appelle `matcher.match?(assert, value)`
 Le chaînage `.and` retourne `self` pour permettre `expect(x).to(eq 1).and.to(eq 1)`.
 
+## Limitations DragonRuby / mruby
+
+DragonRuby utilise mruby, pas CRuby. Certaines fonctionnalités Ruby standard sont absentes :
+
+- **Pas de Regexp** : `Regexp` n'existe pas. Le matcher `match` (regex) ne peut pas être utilisé. Ne pas écrire de tests avec des expressions régulières (`/pattern/`).
+- **Pas de `require`** : utiliser `require_relative` ou le `require` custom de DragonRuby (chemin depuis la racine du projet).
+- **`it` est réservé** : en Ruby 3.4+ (DR 6.x), `it` est un mot-clé. Utiliser `specify` à la place.
+
 ## Conventions de code
 
 - **Nommage** : snake_case partout, matchers en snake_case avec préfixe (`be_`, `have_`, `start_`, `end_`)

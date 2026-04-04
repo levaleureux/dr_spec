@@ -80,10 +80,12 @@ expect([]).to be_empty
 | `end_with(string)` | Vérifie le suffixe | |
 | `match(regex)` | Vérifie une expression régulière | |
 
+> **Attention** : Le matcher `match` (regex) n'est **pas utilisable** dans DragonRuby. mruby n'inclut pas `Regexp` par défaut. Ce matcher existe dans le code source mais ne peut pas être appelé.
+
 ```ruby
 expect("hello world").to start_with "hello"
 expect("hello world").to end_with "world"
-expect("abc123").to match(/\d+/)
+# match(/regex/) — NON DISPONIBLE dans DragonRuby (pas de Regexp en mruby)
 ```
 
 ## Erreur
