@@ -343,37 +343,49 @@ There is on this project a will to make a very fast and readable output
 <img src="image.png" alt="some output" width="300">
 
 
-## Improve de doc
+## Contributing
 
-If you want to help on the doc of this project.
-you can use grip to preview your markdown.
+### Branch strategy (git flow)
 
+This project uses [git flow](https://danielkummer.github.io/git-flow-cheatsheet/):
+
+| Branch | Role |
+|--------|------|
+| `master` | Stable releases only |
+| `develop` | Main development branch |
+| `dr_spec_2` | **Transition branch** for the v2 rewrite (temporary, will merge into `develop`) |
+| `feature/*` | Feature branches, created from `dr_spec_2` (during transition) or `develop` |
+
+### How to contribute
+
+1. Fork the repo
+2. Create a feature branch from `dr_spec_2` (during v2 transition) or `develop`:
+   ```bash
+   git checkout -b feature/my-feature origin/dr_spec_2
+   ```
+3. Write your code and tests
+4. Push and open a PR targeting `dr_spec_2` (or `develop` after v2 is released)
+
+**Never commit directly to `master`.** All changes go through `feature/* → develop → master`.
+
+### Preview docs locally
+
+```bash
+pip install grip
+grip README.md
 ```
-  pip install grip
 
-```
-
-```
-  grip chemin/vers/votre/fichier.md
-
-```
 ## Contributors
 
-thanks to 
-1. https://github.com/ekiru for the first PR.
-1. https://github.com/terrainoob  for opening some issue.
+Thanks to:
+1. https://github.com/ekiru for the first PR
+2. https://github.com/terrainoob for opening some issues
 
-## Thanks
+## Acknowledgements
 
-This project was strongly inspired by
-https://github.com/DragonRidersUnite/dragon_test
+This project was strongly inspired by [dragon_test](https://github.com/DragonRidersUnite/dragon_test).
 
-See
-https://github.com/kfischer-okarin/roguelike-tutorial-2021/tree/main/game/tests
-and
-https://github.com/kfischer-okarin/sludge-n-cinder/tree/main/game/tests
-for good complement
-
-This project is pretty new, so if you want to improve the doc or add other test
-helper. Feel free to open an issue and make a PR it will be apreciate.
+See also:
+- [kfischer-okarin/roguelike-tutorial-2021](https://github.com/kfischer-okarin/roguelike-tutorial-2021/tree/main/game/tests)
+- [kfischer-okarin/sludge-n-cinder](https://github.com/kfischer-okarin/sludge-n-cinder/tree/main/game/tests)
 
