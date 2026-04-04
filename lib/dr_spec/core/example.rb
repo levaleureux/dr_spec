@@ -34,6 +34,8 @@ module DrSpec
         DrSpec::Result.new(self, status: :passed)
       rescue DrSpec::ExpectationFailed => e
         DrSpec::Result.new(self, status: :failed, error: e)
+      rescue => e
+        DrSpec::Result.new(self, status: :failed, error: e)
       end
     end
   end
