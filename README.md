@@ -293,7 +293,7 @@ expect([]).to be_empty
 |---------|-------------|
 | `start_with(string)` | Verifies string starts with prefix |
 | `end_with(string)` | Verifies string ends with suffix |
-| `match(regex)` | Verifies string matches pattern |
+| ~~`match(regex)`~~ | Not available — mruby has no `Regexp` support |
 
 ```ruby
 expect("hello world").to start_with "hello"
