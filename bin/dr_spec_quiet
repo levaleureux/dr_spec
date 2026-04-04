@@ -1,0 +1,62 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# Wrapper quiet pour dr_spec via DragonRuby
+# Output condensé pour lefthook/CI
+#
+# Succès: "dr_spec: 32 test(s) passed"
+# Échec:  "dr_spec: 2 test(s) failed\n  🔴 test_name - reason"
+
+require "open3"
+require "timeout"
+
+DR_BIN = ENV["DRAGONRUBY_BIN"] || File.expand_path("../../../dragonruby-macos/dragonruby", __dir__)
+PROJECT = File.expand_path("..", __dir__)
+DR_TIMEOUT = Integer(ENV["DR_SPEC_TIMEOUT"] || 30)
+
+cmd = [
+  DR_BIN, PROJECT,
+  "--eval", "app/tests.rb",
+  "--no-tick",
+  "--exit-on-fail"
+]
+
+stdout = stderr = ""
+status = nil
+begin
+  Timeout.timeout(DR_TIMEOUT) do
+    stdout, stderr, status = Open3.capture3(*cmd)
+  end
+rescue Timeout::Error
+  # Kill any stuck DragonRuby process
+  system("pkill -9 -f '#{DR_BIN}.*#{PROJECT}'")
+  puts "dr_spec: timeout after #{DR_TIMEOUT}s (DragonRuby did not exit)"
+  exit 1
+end
+output = stdout + stderr
+
+# Extract summary lines
+passed  = output[/(\d+) ✅ test\(s\) passed/, 1].to_i
+failed  = output[/(\d+) ➖ test\(s\) failed/, 1].to_i
+
+if status.success? && failed.zero?
+  puts "dr_spec: #{passed} test(s) passed"
+  exit 0
+end
+
+puts "dr_spec: #{failed} test(s) failed, #{passed} passed"
+
+# Extract failure details
+output.scan(/🔴 (.+)/).each do |match|
+  puts "  #{match[0]}"
+end
+
+# Extract error if no summary found (crash/syntax error)
+if passed.zero? && failed.zero?
+  puts "dr_spec: unexpected output (possible crash)"
+  output.lines.select { |l| l.include?("Error") || l.include?("error") }.each do |l|
+    puts "  #{l.strip}"
+  end
+end
+
+exit 1

@@ -1,18 +1,11 @@
 inherit_from:
   - .enabled.yml
   - .disabled.yml
-#Style/StringLiterals:
-#  EnforcedStyle: double_quotes
-#  Enabled: true
+
 AllCops:
   TargetRubyVersion: 2.6
   Exclude:
-      - 'spec/controllers/**/*'
-      - 'spec/features/**/*'
-      - 'spec/models/**/*'
-      - 'spec/i18n_spec.rb'
-      - 'spec/payloads/**/*'
-      - 'db/**/*'
-      - 'config/**/*'
+    - "spec_cli/**/*"
+    - "bin/**/*"
+    - "lib/dr_spec/tests_formater.rb"   # ANSI color tables, long lines expected
   DisabledByDefault: true
-

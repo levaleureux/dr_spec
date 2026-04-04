@@ -21,7 +21,7 @@ spec :metadata do
       # 1. can target
       # 2. can have good specific require chaine
       context "when there is some focus method" do
-        it "run the command" do
+        specify "run the command" do
           system "echo '#{command}'"
           system command
           system "command done"
@@ -33,7 +33,7 @@ spec :metadata do
     context "when there is flag" do
       let(:tag_filter){"spec-focus-tags player,levels"}
       context "when there is some focus method" do
-        it "run the command" do
+        specify "run the command" do
           system "echo '#{command}'"
           system command
           system "command done"

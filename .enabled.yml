@@ -1,0 +1,40 @@
+# Rubocop — enabled cops
+# Sandi Metz inspired rules + layout basics
+
+Metrics/MethodLength:
+  Enabled: true
+  Max: 15
+  Exclude:
+    - "bin/**/*"
+    - "spec/**/*"
+    - "lib/dr_spec/core/patch.rb"       # legacy, refactor planned
+    - "lib/dr_spec/dragon_specs.rb"      # orchestrator, refactor planned
+
+Metrics/ClassLength:
+  Enabled: true
+  Max: 150
+
+Metrics/ParameterLists:
+  Enabled: true
+  Max: 5
+
+Metrics/BlockNesting:
+  Enabled: true
+  Max: 3
+
+Metrics/CyclomaticComplexity:
+  Enabled: true
+  Max: 6
+  Exclude:
+    - "lib/dr_spec/core/patch.rb"
+    - "lib/dr_spec/dragon_specs.rb"
+
+Layout/LineLength:
+  Enabled: true
+  Max: 120
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/MethodDefParentheses:
+  Enabled: false
