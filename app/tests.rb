@@ -11,6 +11,7 @@ require "spec/shared_examples_spec.rb"
 require "spec/architecture_spec.rb"
 require "spec/matchers_3_spec.rb"
 require "spec/type_matchers_spec.rb"
+require "spec/hook_exception_spec.rb"
 require "spec/tick_based_spec.rb"
 require "spec/main_spec.rb"
 
