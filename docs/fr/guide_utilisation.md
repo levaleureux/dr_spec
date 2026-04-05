@@ -174,9 +174,9 @@ Sortie compacte, un caractere par test :
 
 ```
 ..........F..P..
-100 test(s) passed
- 2 test(s) pending
- 1 test(s) failed
+100 ✅ test(s) passed
+ 2 🔀 test(s) pending
+ 1 ❌ test(s) failed
 ```
 
 ### Doc (`--doc`)
@@ -189,13 +189,13 @@ Format documentation avec arbre indente des specs, similaire a RSpec :
 
 ```
 string_matchers
-  start_with
-  end_with
+  ✅ start_with
+  ✅ end_with
 architecture
   example_group
     tree construction
-      ExampleGroup has children and parent
-      full_description concatenates ancestor descriptions
+      ✅ ExampleGroup has children and parent
+      ✅ full_description concatenates ancestor descriptions
 
 100 passed, 2 pending
 ```
