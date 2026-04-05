@@ -6,40 +6,15 @@ module DrSpec
       end
 
       def generate
-        files_data = {}
-        @tracker.tracked_files.each do |file|
-          covered, executable = @tracker.file_stats(file)
-          next if executable == 0
-
-          pct = (covered.to_f / executable * 100).round(1)
-          uncov = @tracker.uncovered_lines(file)
-          hits = @tracker.hit_data[file] || {}
-
-          files_data[file] = {
-            covered: covered,
-            executable: executable,
-            percentage: pct,
-            uncovered_lines: uncov,
-            hits: hits
-          }
-        end
-
-        total_covered, total_executable = @tracker.total_stats
-        total_pct = total_executable > 0 ? (total_covered.to_f / total_executable * 100).round(1) : 0.0
-
         {
           timestamp: Time.now.to_s,
-          total: {
-            covered: total_covered,
-            executable: total_executable,
-            percentage: total_pct
-          },
-          files: files_data
+          total: total_hash,
+          files: files_hash
         }
       end
 
       def to_json
-        hash_to_json(generate)
+        serialize(generate)
       end
 
       def write(path = "coverage/coverage.json")
@@ -49,28 +24,57 @@ module DrSpec
 
       private
 
-      def hash_to_json(obj)
-        case obj
-        when Hash
-          pairs = obj.map { |k, v| "#{value_to_json(k.to_s)}: #{hash_to_json(v)}" }
-          "{ #{pairs.join(', ')} }"
-        when Array
-          items = obj.map { |v| hash_to_json(v) }
-          "[#{items.join(', ')}]"
-        when String
-          value_to_json(obj)
-        when Numeric
-          obj.to_s
-        when true, false
-          obj.to_s
-        when nil
-          "null"
-        else
-          value_to_json(obj.to_s)
-        end
+      def total_hash
+        covered, executable = @tracker.total_stats
+        pct = executable > 0 ? (covered.to_f / executable * 100).round(1) : 0.0
+        { covered: covered, executable: executable, percentage: pct }
       end
 
-      def value_to_json(str)
+      def files_hash
+        result = {}
+        @tracker.tracked_files.each do |file|
+          covered, executable = @tracker.file_stats(file)
+          next if executable == 0
+
+          result[file] = file_hash(file, covered, executable)
+        end
+        result
+      end
+
+      def file_hash(file, covered, executable)
+        {
+          covered: covered,
+          executable: executable,
+          percentage: (covered.to_f / executable * 100).round(1),
+          uncovered_lines: @tracker.uncovered_lines(file),
+          hits: @tracker.hit_data[file] || {}
+        }
+      end
+
+      def serialize(obj)
+        return serialize_hash(obj) if obj.is_a?(Hash)
+        return serialize_array(obj) if obj.is_a?(Array)
+
+        serialize_primitive(obj)
+      end
+
+      def serialize_array(arr)
+        "[#{arr.map { |v| serialize(v) }.join(', ')}]"
+      end
+
+      def serialize_primitive(obj)
+        return "null" if obj.nil?
+        return obj.to_s if obj.is_a?(Numeric) || obj == true || obj == false
+
+        escape_string(obj.to_s)
+      end
+
+      def serialize_hash(hash)
+        pairs = hash.map { |k, v| "#{escape_string(k.to_s)}: #{serialize(v)}" }
+        "{ #{pairs.join(', ')} }"
+      end
+
+      def escape_string(str)
         escaped = str.gsub("\\", "\\\\\\\\").gsub('"', '\\"').gsub("\n", "\\n")
         "\"#{escaped}\""
       end

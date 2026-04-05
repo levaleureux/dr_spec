@@ -68,24 +68,30 @@ module DrSpec
       def report
         puts ""
         puts "== Coverage Report =="
-        @hits.each_key do |file|
-          covered, executable = file_stats(file)
-          next if executable == 0
-
-          pct = (covered.to_f / executable * 100).round(1)
-          puts " #{file.ljust(40)} #{pct}% (#{covered}/#{executable} lines)"
-          uncov = uncovered_lines(file)
-          if uncov.any?
-            puts "   Uncovered: #{uncov.join(', ')}"
-          end
-        end
-        puts "------------------------------------------"
-        covered, executable = total_stats
-        if executable > 0
-          pct = (covered.to_f / executable * 100).round(1)
-          puts " Total#{' ' * 35}#{pct}% (#{covered}/#{executable} lines)"
-        end
+        @hits.each_key { |file| report_file(file) }
+        report_total
         puts ""
+      end
+
+      private
+
+      def report_file(file)
+        covered, executable = file_stats(file)
+        return if executable == 0
+
+        pct = (covered.to_f / executable * 100).round(1)
+        puts " #{file.ljust(40)} #{pct}% (#{covered}/#{executable} lines)"
+        uncov = uncovered_lines(file)
+        puts "   Uncovered: #{uncov.join(', ')}" if uncov.any?
+      end
+
+      def report_total
+        covered, executable = total_stats
+        return unless executable > 0
+
+        pct = (covered.to_f / executable * 100).round(1)
+        puts "------------------------------------------"
+        puts " Total#{' ' * 35}#{pct}% (#{covered}/#{executable} lines)"
       end
     end
   end
