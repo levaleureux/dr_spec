@@ -39,16 +39,28 @@ All new features and fixes target `dr_spec_2`. Once the community has validated 
 
 That's it! Now you can write specs for your app using `dr_spec`.
 
-### Using `smaug`
+### Using Smaug
 
-If you're using `smaug` to manage dependencies, you can install `dr_spec` by adding it to your `Smaug.toml`:
+[Smaug](https://smaug.dev/) is the DragonRuby package manager. To install dr_spec via Smaug, add it to your project's `Smaug.toml`:
 
 ```toml
+[dependencies]
 dr_spec = { repo = "https://github.com/levaleureux/dr_spec" }
 ```
 
-Then simply run `smaug install` and add `require "smaug/dr_spec/lib/dr_spec/dragon_specs`
-to your `app/main.rb` or `app/test.rb` file.
+Then run:
+
+```bash
+smaug install
+```
+
+In your `app/main.rb` or `app/test.rb`, require dr_spec from the Smaug install path:
+
+```ruby
+require "smaug/dr_spec/lib/dr_spec/dragon_specs.rb"
+```
+
+All internal requires use `require_relative`, so dr_spec works correctly from the `smaug/` directory without any path issues.
 
 ## Setup
 
@@ -57,7 +69,7 @@ your specs entrypoint file. This is normally `app/main.rb` or `app/test.rb`, but
 
 ```ruby
 # spec/main.rb
-require "lib/dr_spec/dragon_specs.rb" # or if you're using smaug: require 'smaug/dr_spec/lib/dr_spec/dragon_specs'
+require "lib/dr_spec/dragon_specs.rb" # or if you're using smaug: require "smaug/dr_spec/lib/dr_spec/dragon_specs.rb"
 
 spec "Setup specs" do
   specify "works" do
