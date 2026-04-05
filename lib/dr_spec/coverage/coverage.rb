@@ -1,47 +1,41 @@
 module DrSpec
   module Coverage
-    class << self
-      attr_accessor :track_path
+    def self.start(track_path = "app/")
+      @track_path = track_path
+      @enabled = true
+      @tracker = Tracker.instance
+      @instrumenter = Instrumenter.new
 
-      def start(track_path = "app/")
-        @track_path = track_path
-        @enabled = true
-        @tracker = Tracker.instance
-        @instrumenter = Instrumenter.new
+      puts "📊 Coverage enabled for '#{track_path}*'"
+    end
 
-        puts "📊 Coverage enabled for '#{track_path}*'"
-      end
+    def self.enabled?
+      @enabled || false
+    end
 
-      def enabled?
-        @enabled || false
-      end
+    def self.should_instrument?(path)
+      enabled? && @track_path && path.start_with?(@track_path)
+    end
 
-      def should_instrument?(path)
-        enabled? && @track_path && path.start_with?(@track_path)
-      end
+    def self.instrument_and_eval(path)
+      source = $gtk.read_file(path)
+      return false unless source
 
-      def instrument_and_eval(path)
-        source = $gtk.read_file(path)
-        return false unless source
+      instrumented = @instrumenter.instrument(source, path, @tracker)
+      temp_path = "tmp/coverage_#{path.gsub('/', '_')}"
+      $gtk.write_file(temp_path, instrumented)
+      $__dr_original_require.call(temp_path)
+      true
+    end
 
-        instrumented = @instrumenter.instrument(source, path, @tracker)
-        # Write instrumented code to a temp file and require it normally
-        # This ensures classes are defined at top-level scope
-        temp_path = "tmp/coverage_#{path.gsub('/', '_')}"
-        $gtk.write_file(temp_path, instrumented)
-        $__dr_original_require.call(temp_path)
-        true
-      end
+    def self.report
+      Tracker.instance.report if enabled?
+    end
 
-      def report
-        Tracker.instance.report if enabled?
-      end
-
-      def reset!
-        @enabled = false
-        @track_path = nil
-        Tracker.reset!
-      end
+    def self.reset!
+      @enabled = false
+      @track_path = nil
+      Tracker.reset!
     end
   end
 end
