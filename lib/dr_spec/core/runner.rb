@@ -40,10 +40,38 @@ module DrSpec
       focused = groups.select { |g| g.metadata.focused? }
       target_groups = focused.any? ? focused : groups
 
-      target_groups.each do |group|
-        group.each_example { |ex| examples << ex }
+      config = DrSpec::Configuration.instance
+
+      if config.tag_filter_active?
+        # Tag filtering: collect examples only from groups matching tags
+        target_groups.each do |group|
+          collect_tagged_examples(group, config.tag_filters, examples)
+        end
+      else
+        target_groups.each do |group|
+          group.each_example { |ex| examples << ex }
+        end
       end
+
       examples
+    end
+
+    # Recursively collect examples from groups that match any of the given tags.
+    # A group matches if it or any of its ancestors has a matching tag.
+    def collect_tagged_examples(group, tag_filters, examples)
+      if group.has_any_tag?(tag_filters)
+        # This group matches — include all its examples
+        group.examples.each { |ex| examples << ex }
+        # And all children recursively (they inherit the tag match)
+        group.children.each do |child|
+          child.each_example { |ex| examples << ex }
+        end
+      else
+        # This group doesn't match, but a child might have its own tags
+        group.children.each do |child|
+          collect_tagged_examples(child, tag_filters, examples)
+        end
+      end
     end
   end
 end

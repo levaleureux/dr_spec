@@ -46,6 +46,20 @@ module DrSpec
       chain.map(&:description).join("_")
     end
 
+    # Check if this group or any ancestor has any of the given tags
+    def has_any_tag?(tag_list)
+      chain = ancestor_chain
+      chain.any? do |group|
+        tag_list.any? { |tag| group.metadata.has_tag?(tag) }
+      end
+    end
+
+    # Collect all tags from this group and its ancestors
+    def collected_tags
+      chain = ancestor_chain
+      chain.flat_map { |g| g.metadata.tags }
+    end
+
     # DFS iterator over all examples in this group and children
     def each_example(&block)
       @examples.each(&block)

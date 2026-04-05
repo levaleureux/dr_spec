@@ -16,6 +16,10 @@ module DrSpec
       @data[:tags] || []
     end
 
+    def has_tag?(tag)
+      tags.include?(tag)
+    end
+
     def [](key)
       @data[key]
     end
