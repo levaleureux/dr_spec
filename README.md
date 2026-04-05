@@ -459,6 +459,27 @@ run_specs(reporter: DrSpec::Reporters::Doc.new)
 run_specs(reporter: DrSpec::Reporters::Quiet.new)
 ```
 
+## Using with AI agents (Claude Code, etc.)
+
+When running dr_spec from an AI agent, use `--quiet` to minimize token usage:
+
+```bash
+./dragonruby . --eval app/tests.rb --no-tick --quiet --exit-on-fail
+```
+
+This outputs a single line (`dr_spec: 100 test(s) passed`) instead of listing every test. The `--exit-on-fail` flag writes failures to `test-failures.txt` for the agent to read only when needed.
+
+### Claude Code skills
+
+This repo includes Claude Code skills in `.claude/skills/`:
+
+| Skill | Description |
+|-------|-------------|
+| `/test` | Run tests in quiet mode (recommended for AI) |
+| `/test-doc` | Run tests with documentation format |
+
+These are available automatically when working in the project with Claude Code.
+
 ## Contributing
 
 ### Branch strategy (git flow)
