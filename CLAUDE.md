@@ -123,15 +123,22 @@ DragonRuby utilise mruby, pas CRuby. Certaines fonctionnalités Ruby standard so
 
 - **Nommage** : snake_case partout, matchers en snake_case avec préfixe (`be_`, `have_`, `start_`, `end_`)
 - **Pattern matcher** : classe `XxxMatcher < CoreMatcher` + fonction helper `xxx(expected, fail_with: "")`
-- **Specs** : `spec "description" do ... end` avec `it`, `context`, `before`, `after`
-- **Blocs de test** : signature `do |args, assert|` (convention DragonRuby)
-- **Description** : `:symbole` ou `"string"` pour spec/it
+- **Specs** : `spec "description" do ... end` avec `specify`, `context`, `before`, `after`
+- **Blocs de test** : signature `do ... end` (v2 — les `|args, assert|` ne sont plus nécessaires)
+- **Description** : `:symbole` ou `"string"` pour spec/specify
+- **`it` est réservé** : utiliser `specify` (Ruby 3.4+ / DragonRuby 6.x)
 
 ## Commandes
 
 ```bash
-# Lancer les tests dr_spec (depuis la racine drgame/)
+# Lancer les tests (mode quiet — recommandé pour les agents IA, économise les tokens)
+./dragonruby-macos/dragonruby projects/dr_spec/mygame --eval app/tests.rb --no-tick --quiet --exit-on-fail
+
+# Lancer les tests (mode dots — par défaut)
 ./dragonruby-macos/dragonruby projects/dr_spec/mygame --eval app/tests.rb --no-tick
+
+# Lancer les tests (mode doc — arbre indenté des specs)
+./dragonruby-macos/dragonruby projects/dr_spec/mygame --eval app/tests.rb --no-tick --doc
 
 # Lancer depuis le dossier dr_spec (script intégré)
 ./run_tests
