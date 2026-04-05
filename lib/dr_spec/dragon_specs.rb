@@ -7,6 +7,8 @@ def run_specs
   runner = DrSpec::Runner.new
   runner.run
 
+  DrSpec::Coverage.report
+
   if runner.passed?
     puts "🪩 tests passed!"
   else
@@ -48,3 +50,6 @@ require_relative "core/reporter.rb"
 require_relative "reporters/dots.rb"
 require_relative "reporters/quiet.rb"
 require_relative "core/runner.rb"
+require_relative "coverage/tracker.rb"
+require_relative "coverage/instrumenter.rb"
+require_relative "coverage/coverage.rb"

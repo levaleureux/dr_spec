@@ -8,4 +8,6 @@ AllCops:
     - "spec_cli/**/*"
     - "bin/**/*"
     - "lib/dr_spec/tests_formater.rb"   # ANSI color tables, long lines expected
+    - "lib/dr_spec/coverage/**/*"       # instrumentation code, complex by nature
+    - "poc/**/*"                        # proof of concept, not production code
   DisabledByDefault: true

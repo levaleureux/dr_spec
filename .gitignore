@@ -1,0 +1,4 @@
+errors/
+tmp/
+test-failures.txt
+logs/
