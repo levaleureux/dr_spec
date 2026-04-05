@@ -397,12 +397,67 @@ tmp/
 - **No automatic file discovery** — mruby has no `Dir.glob`, files must be loaded via `require`
 - **No Regexp** — mruby doesn't include Regexp; the instrumenter uses string comparisons
 
-## Outputs
+## Output formats
 
-There is on this project a will to make a very fast and readable output
+dr_spec ships with 3 built-in reporters. Pass a CLI flag or use `run_specs(reporter:)`.
 
-<img src="image.png" alt="some output" width="300">
+### Dots (default)
 
+Compact output, one character per test:
+
+```bash
+./dragonruby . --eval app/tests.rb --no-tick
+```
+
+```
+..........F..P..
+100 ✅ test(s) passed
+ 2 🔀 test(s) pending
+ 1 ❌ test(s) failed
+```
+
+### Doc (`--doc`)
+
+RSpec-style documentation with indented spec tree:
+
+```bash
+./dragonruby . --eval app/tests.rb --no-tick --doc
+```
+
+```
+string_matchers
+  ✅ start_with
+  ✅ end_with
+architecture
+  example_group
+    tree construction
+      ✅ ExampleGroup has children and parent
+      ✅ full_description concatenates ancestor descriptions
+  scope_isolation
+    each it block gets its own ExampleContext
+      ✅ first test increments counter
+
+100 passed, 2 pending
+```
+
+### Quiet (`--quiet`)
+
+Minimal output for CI scripts:
+
+```bash
+./dragonruby . --eval app/tests.rb --no-tick --quiet
+```
+
+```
+dr_spec: 100 test(s) passed
+```
+
+### Programmatic usage
+
+```ruby
+run_specs(reporter: DrSpec::Reporters::Doc.new)
+run_specs(reporter: DrSpec::Reporters::Quiet.new)
+```
 
 ## Contributing
 
@@ -414,18 +469,17 @@ This project uses [git flow](https://danielkummer.github.io/git-flow-cheatsheet/
 |--------|------|
 | `master` | Stable releases only |
 | `develop` | Main development branch |
-| `dr_spec_2` | **Transition branch** for the v2 rewrite (temporary, will merge into `develop`) |
-| `feature/*` | Feature branches, created from `dr_spec_2` (during transition) or `develop` |
+| `feature/*` | Feature branches, created from `develop` |
 
 ### How to contribute
 
 1. Fork the repo
-2. Create a feature branch from `dr_spec_2` (during v2 transition) or `develop`:
+2. Create a feature branch from `develop`:
    ```bash
-   git checkout -b feature/my-feature origin/dr_spec_2
+   git checkout -b feature/my-feature origin/develop
    ```
 3. Write your code and tests
-4. Push and open a PR targeting `dr_spec_2` (or `develop` after v2 is released)
+4. Push and open a PR targeting `develop`
 
 **Never commit directly to `master`.** All changes go through `feature/* → develop → master`.
 
