@@ -13,10 +13,11 @@ def focus_spec(name, metadata = {}, &block)
   spec(name, metadata.merge(focus: true), &block)
 end
 
-def context(description, &block)
+def context(description, metadata = {}, &block)
   world  = DrSpec::World.instance
   parent = world.current_group
-  child  = DrSpec::ExampleGroup.new(description, parent: parent)
+  meta   = DrSpec::Metadata.new(metadata)
+  child  = DrSpec::ExampleGroup.new(description, parent: parent, metadata: meta)
   parent.add_child(child)
   world.push_group(child)
   block.call

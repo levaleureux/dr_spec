@@ -4,6 +4,9 @@ def run_specs(reporter: nil)
   puts "================      running tests ========="
   puts "💨 running tests"
 
+  # Apply CLI arguments (e.g. --tag fast)
+  DrSpec::Configuration.instance.apply_cli_arguments($gtk.cli_arguments)
+
   reporter ||= select_reporter
   runner = DrSpec::Runner.new(reporter: reporter)
   runner.run
