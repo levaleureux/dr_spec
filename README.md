@@ -336,6 +336,67 @@ expect(42).to satisfy { |v| v.even? && v > 10 }
 ```
 
 
+## Code Coverage
+
+dr_spec includes line-level code coverage for DragonRuby/mruby — something that standard Ruby tools (SimpleCov) can't do since mruby has no `Coverage` module.
+
+### Quick start
+
+Add one line before your requires:
+
+```ruby
+require "lib/dr_spec/dragon_specs.rb"
+
+DrSpec::Coverage.start           # instruments app/ files automatically
+
+require "app/component/ball.rb"  # instrumented (tracked)
+require "app/component/game.rb"  # instrumented (tracked)
+require "spec/ball_spec.rb"      # NOT instrumented
+require "spec/main_spec.rb"
+```
+
+No changes to your game code. The coverage report is printed automatically after `run_specs`:
+
+```
+== Coverage Report ==
+ app/component/ball.rb       85.7% (12/14 lines)
+   Uncovered: 23, 47
+ app/component/game.rb       100.0% (18/18 lines)
+------------------------------------------
+ Total                       93.8% (30/32 lines)
+```
+
+### Custom track path
+
+By default, `Coverage.start` instruments files starting with `"app/"`. You can change this:
+
+```ruby
+DrSpec::Coverage.start("lib/my_lib/")  # only instrument lib/my_lib/ files
+```
+
+### How it works
+
+dr_spec uses Istanbul/nyc-style source instrumentation:
+
+1. `Coverage.start` overrides `require` to intercept matching files
+2. Each intercepted file is read, and a `__dr_cov(file, line)` call is injected before each executable line
+3. The instrumented code is written to a temporary file in `tmp/` and loaded via the original `require`
+4. After tests run, the tracker reports which lines were executed
+
+### Temporary files
+
+Coverage generates temporary instrumented files in the `tmp/` directory of your project (e.g. `tmp/coverage_app_component_ball.rb`). These files are created during test runs and can be safely deleted. Add `tmp/` to your `.gitignore`:
+
+```
+tmp/
+```
+
+### Limitations
+
+- **Line coverage only** — no branch coverage (would require an AST parser)
+- **No automatic file discovery** — mruby has no `Dir.glob`, files must be loaded via `require`
+- **No Regexp** — mruby doesn't include Regexp; the instrumenter uses string comparisons
+
 ## Outputs
 
 There is on this project a will to make a very fast and readable output
