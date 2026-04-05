@@ -143,23 +143,6 @@ bundle exec guard
 bundle exec rspec spec_cli/
 ```
 
-## Issues ouvertes (résumé)
-
-| # | Titre | État |
-|---|-------|------|
-| 2 | Add 'let' syntax | Ouvert |
-| 4 | Object/instance mocking | Ouvert |
-| 6 | Logging/rerun failed tests | Ouvert |
-| 7 | Tags and filtering | WIP (metadata.rb commencé) |
-| 8 | Failure aggregation | Ouvert |
-| 15 | Add rubocop | Ouvert |
-| 20 | More matchers 3 | be_nil fait, reste à faire |
-| 38 | Add doc mode | Ouvert |
-
-### Bugs connus
-- ~~**Scope issue** (#53)~~ : **CORRIGÉ** par l'architecture class-based (#56). Chaque test a son propre ExampleContext.
-- **Type matchers** : `be_instance_of` et `be_kind_of` existent mais n'ont pas de tests
-
 ## Git — workflow git flow
 
 - Remote : `git@github-valeureux.com:levaleureux/dr_spec.git`
@@ -171,23 +154,28 @@ bundle exec rspec spec_cli/
 |---------|------|
 | `master` | Production stable. **Ne jamais commiter directement dessus.** |
 | `develop` | Branche d'intégration. Les features sont mergées ici. |
-| `dr_spec_2` | **Branche de transition v2.** Cible de toutes les features pendant le refactor class-based. Sera mergée dans `develop` après validation communauté. |
-| `feature/*` | Branches de développement, créées depuis `dr_spec_2` (pendant la transition). |
+| `feature/*` | Branches de d��veloppement, créées depuis `develop`. |
 
-### Workflow (pendant la transition dr_spec_2)
+### Workflow
 
-1. Créer une branche `feature/xxx` depuis `dr_spec_2`
+1. Créer une branche `feature/xxx` depuis `develop`
 2. Développer et commiter sur la feature branch
-3. Push + PR vers `dr_spec_2`
-4. Une fois la v2 validée par la communauté : merge `dr_spec_2` → `develop` → `master`
+3. Push + PR vers `develop`
+4. **Ouvrir la PR dans le navigateur** pour relecture avant merge
+5. Releases : merge `develop` → `master` avec tag de version
 
 ```bash
-# Nouvelle feature (pendant transition)
-git checkout -b feature/ma_feature origin/dr_spec_2
-
-# Une fois terminée, push et PR vers dr_spec_2
+git checkout -b feature/ma_feature origin/develop
 git push -u origin feature/ma_feature
-gh pr create --base dr_spec_2
+gh pr create --base develop
 ```
 
 **IMPORTANT** : ne jamais commiter ni push directement sur `master`. Toujours passer par `feature/* → develop → master`.
+
+### Règles PR
+
+- **Toujours ouvrir la PR dans le navigateur** (`gh pr view --web`) avant de demander un merge
+- **Inclure une synthèse pour le relecteur** dans le body de la PR : résumé des changements, fichiers clés modifiés, ce qu'il faut vérifier
+- **Vérifier que la CI est verte** avant de merge (`gh pr checks`)
+- **Fermer les issues liées** après le merge
+- **Nettoyer** : pas de fichiers temp, pas de zombies DragonRuby

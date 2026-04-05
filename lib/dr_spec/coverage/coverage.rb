@@ -29,7 +29,10 @@ module DrSpec
     end
 
     def self.report
-      Tracker.instance.report if enabled?
+      return unless enabled?
+
+      Tracker.instance.report
+      JsonReporter.new(Tracker.instance).write
     end
 
     def self.reset
