@@ -475,8 +475,8 @@ This repo includes Claude Code skills in `.claude/skills/`:
 
 | Skill | Description |
 |-------|-------------|
-| `/test` | Run tests in quiet mode (recommended for AI) |
-| `/test-doc` | Run tests with documentation format |
+| `/dr-spec` | Run tests in quiet mode (recommended for AI) |
+| `/dr-spec-doc` | Run tests with documentation format |
 
 These are available automatically when working in the project with Claude Code.
 
