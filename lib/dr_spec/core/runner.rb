@@ -58,6 +58,8 @@ module DrSpec
 
     # Recursively collect examples from groups that match any of the given tags.
     # A group matches if it or any of its ancestors has a matching tag.
+    # Tag inheritance: when a parent group matches, ALL children are included
+    # regardless of their own tags.
     def collect_tagged_examples(group, tag_filters, examples)
       if group.has_any_tag?(tag_filters)
         # This group matches — include all its examples

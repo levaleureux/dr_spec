@@ -86,7 +86,7 @@ spec "tags and filtering" do
   context "Runner tag filtering" do
     specify "without tag filter, all examples are collected" do
       # Reset configuration to ensure no filters
-      DrSpec::Configuration.reset!
+      DrSpec::Configuration.reset
 
       group1 = DrSpec::ExampleGroup.new("g1", metadata: DrSpec::Metadata.new(tags: [:fast]))
       ex1 = DrSpec::Example.new("ex1", group: group1, block: proc { })
@@ -99,26 +99,28 @@ spec "tags and filtering" do
       world = DrSpec::World.instance
       original_groups = world.example_groups.dup
 
-      # Temporarily add our test groups
-      world.example_groups.clear
-      world.example_groups << group1
-      world.example_groups << group2
+      begin
+        # Temporarily add our test groups
+        world.example_groups.clear
+        world.example_groups << group1
+        world.example_groups << group2
 
-      reporter = DrSpec::Reporters::Quiet.new
-      runner = DrSpec::Runner.new(reporter: reporter)
+        reporter = DrSpec::Reporters::Quiet.new
+        runner = DrSpec::Runner.new(reporter: reporter)
 
-      # Use send to access private method
-      examples = runner.send(:collect_examples)
-      expect(examples.length).to eq 2
-
-      # Restore original groups
-      world.example_groups.clear
-      original_groups.each { |g| world.example_groups << g }
-      DrSpec::Configuration.reset!
+        # Use send to access private method
+        examples = runner.send(:collect_examples)
+        expect(examples.length).to eq 2
+      ensure
+        # Restore original groups
+        world.example_groups.clear
+        original_groups.each { |g| world.example_groups << g }
+        DrSpec::Configuration.reset
+      end
     end
 
     specify "with tag filter, only matching groups run" do
-      DrSpec::Configuration.reset!
+      DrSpec::Configuration.reset
       config = DrSpec::Configuration.instance
       config.tag_filters = [:fast]
 
@@ -133,25 +135,27 @@ spec "tags and filtering" do
       world = DrSpec::World.instance
       original_groups = world.example_groups.dup
 
-      world.example_groups.clear
-      world.example_groups << group_fast
-      world.example_groups << group_slow
+      begin
+        world.example_groups.clear
+        world.example_groups << group_fast
+        world.example_groups << group_slow
 
-      reporter = DrSpec::Reporters::Quiet.new
-      runner = DrSpec::Runner.new(reporter: reporter)
+        reporter = DrSpec::Reporters::Quiet.new
+        runner = DrSpec::Runner.new(reporter: reporter)
 
-      examples = runner.send(:collect_examples)
-      expect(examples.length).to eq 1
-      expect(examples[0].description).to eq "fast_ex"
-
-      # Restore
-      world.example_groups.clear
-      original_groups.each { |g| world.example_groups << g }
-      DrSpec::Configuration.reset!
+        examples = runner.send(:collect_examples)
+        expect(examples.length).to eq 1
+        expect(examples[0].description).to eq "fast_ex"
+      ensure
+        # Restore
+        world.example_groups.clear
+        original_groups.each { |g| world.example_groups << g }
+        DrSpec::Configuration.reset
+      end
     end
 
     specify "tag filter works on nested contexts" do
-      DrSpec::Configuration.reset!
+      DrSpec::Configuration.reset
       config = DrSpec::Configuration.instance
       config.tag_filters = [:db]
 
@@ -169,20 +173,22 @@ spec "tags and filtering" do
       world = DrSpec::World.instance
       original_groups = world.example_groups.dup
 
-      world.example_groups.clear
-      world.example_groups << root
+      begin
+        world.example_groups.clear
+        world.example_groups << root
 
-      reporter = DrSpec::Reporters::Quiet.new
-      runner = DrSpec::Runner.new(reporter: reporter)
+        reporter = DrSpec::Reporters::Quiet.new
+        runner = DrSpec::Runner.new(reporter: reporter)
 
-      examples = runner.send(:collect_examples)
-      expect(examples.length).to eq 1
-      expect(examples[0].description).to eq "db_test"
-
-      # Restore
-      world.example_groups.clear
-      original_groups.each { |g| world.example_groups << g }
-      DrSpec::Configuration.reset!
+        examples = runner.send(:collect_examples)
+        expect(examples.length).to eq 1
+        expect(examples[0].description).to eq "db_test"
+      ensure
+        # Restore
+        world.example_groups.clear
+        original_groups.each { |g| world.example_groups << g }
+        DrSpec::Configuration.reset
+      end
     end
   end
 
