@@ -18,6 +18,7 @@ require "spec/edge_cases_spec.rb"
 require "spec/runner_spec.rb"
 require "spec/coverage_spec.rb"
 require "spec/coverage_drgtk_spec.rb"
+require "spec/coverage_start_spec.rb"
 require "spec/tick_based_spec.rb"
 require "spec/main_spec.rb"
 
