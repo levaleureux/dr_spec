@@ -160,14 +160,107 @@ expect { methode_dangereuse }.to raise_error
 expect { 1 + 1 }.not_to raise_error
 ```
 
+## Formats de sortie (reporters)
+
+dr_spec propose 3 reporters integres. Passez un flag CLI ou utilisez `run_specs(reporter:)`.
+
+### Dots (par defaut)
+
+Sortie compacte, un caractere par test :
+
+```bash
+./dragonruby . --eval app/tests.rb --no-tick
+```
+
+```
+..........F..P..
+100 ✅ test(s) passed
+ 2 🔀 test(s) pending
+ 1 ❌ test(s) failed
+```
+
+### Doc (`--doc`)
+
+Format documentation avec arbre indente des specs, similaire a RSpec :
+
+```bash
+./dragonruby . --eval app/tests.rb --no-tick --doc
+```
+
+```
+string_matchers
+  ✅ start_with
+  ✅ end_with
+architecture
+  example_group
+    tree construction
+      ✅ ExampleGroup has children and parent
+      ✅ full_description concatenates ancestor descriptions
+
+100 passed, 2 pending
+```
+
+### Quiet (`--quiet`)
+
+Sortie minimale pour les scripts CI et les agents IA :
+
+```bash
+./dragonruby . --eval app/tests.rb --no-tick --quiet
+```
+
+```
+dr_spec: 100 test(s) passed
+```
+
+### Usage programmatique
+
+```ruby
+run_specs(reporter: DrSpec::Reporters::Doc.new)
+run_specs(reporter: DrSpec::Reporters::Quiet.new)
+```
+
+## Utilisation avec les agents IA (Claude Code, etc.)
+
+Pour executer dr_spec depuis un agent IA, utilisez `--quiet` pour minimiser la consommation de tokens :
+
+```bash
+./dragonruby . --eval app/tests.rb --no-tick --quiet --exit-on-fail
+```
+
+Cela affiche une seule ligne (`dr_spec: 100 test(s) passed`) au lieu de lister chaque test. Le flag `--exit-on-fail` ecrit les echecs dans `test-failures.txt` pour que l'agent puisse les lire uniquement en cas de besoin.
+
+### Skills Claude Code
+
+Ce repo inclut des skills Claude Code dans `.claude/skills/` :
+
+| Skill | Description |
+|-------|-------------|
+| `/dr-spec` | Lancer les tests en mode quiet (recommande pour l'IA) |
+| `/dr-spec-doc` | Lancer les tests avec le format documentation |
+
+Ces skills sont disponibles automatiquement lorsque vous travaillez dans le projet avec Claude Code.
+
+## Code Coverage
+
+dr_spec inclut un outil de couverture de code ligne par ligne. Voir la [documentation dediee](coverage.md).
+
+```ruby
+DrSpec::Coverage.start
+require "app/mon_fichier.rb"  # instrumente automatiquement
+```
+
 ## Limitations DragonRuby / mruby
 
 DragonRuby utilise mruby, pas CRuby. Quelques différences importantes :
 
-- **Pas de Regexp** : `Regexp` n'existe pas dans mruby. Le matcher `match` (regex) n'est pas utilisable. N'écrivez pas de tests avec `/pattern/`.
-- **`it` est réservé** : en Ruby 3.4+ (DragonRuby 6.x), `it` est un mot-clé. Utilisez `specify` à la place.
+- **Pas de Regexp** : `Regexp` n'existe pas dans mruby. Le matcher `match` (regex) n'est pas utilisable. N'ecrivez pas de tests avec `/pattern/`.
+- **`it` est reserve** : en Ruby 3.4+ (DragonRuby 6.x), `it` est un mot-cle. Utilisez `specify` a la place.
+- **Pas de `Dir.glob`** : mruby n'a pas de decouverte automatique de fichiers. Chaque fichier de test doit etre charge explicitement via `require`.
+- **Pas de `Coverage`** : le module standard Ruby `Coverage` n'existe pas en mruby. dr_spec fournit sa propre solution via `DrSpec::Coverage` (voir [coverage.md](coverage.md)).
 
 ## Voir aussi
 
-- [Matchers](matchers.md) — référence complète
+- [Matchers](matchers.md) — reference complete
 - [Shared Examples](shared_examples.md) — factoriser les tests
+- [Code Coverage](coverage.md) — couverture de code
+- [Guide de migration v1 vers v2 (EN)](../MIGRATION-v2.md) — mise a jour vers la nouvelle architecture

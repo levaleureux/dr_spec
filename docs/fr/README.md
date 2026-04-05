@@ -7,8 +7,13 @@ Bienvenue dans la documentation francophone de dr_spec, un framework de test RSp
 - [Guide d'utilisation](guide_utilisation.md) — Installation, syntaxe, lancer les tests
 - [Matchers](matchers.md) — Référence complète de tous les matchers
 - [Shared Examples](shared_examples.md) — `shared_examples`, `it_behaves_like`, `include_examples`
+- [Code Coverage](coverage.md) — Couverture de code ligne par ligne
 - [Architecture](architecture.md) — Fonctionnement interne du framework (2-pass class-based)
 - [Roadmap](roadmap.md) — Vision, prochaines fonctionnalités, comment contribuer
+
+## Migration
+
+- [Guide de migration v1 vers v2 (EN)](../MIGRATION-v2.md) — Mise a jour de vos tests vers la nouvelle architecture
 
 ## Liens utiles
 

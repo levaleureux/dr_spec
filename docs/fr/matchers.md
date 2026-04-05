@@ -78,7 +78,7 @@ expect([]).to be_empty
 |---------|-------------|--------|
 | `start_with(string)` | Vérifie le préfixe | `matchers/string_matchers.rb` |
 | `end_with(string)` | Vérifie le suffixe | |
-| `match(regex)` | Vérifie une expression régulière | |
+| ~~`match(regex)`~~ | Non disponible — mruby n'a pas de support `Regexp` | |
 
 > **Attention** : Le matcher `match` (regex) n'est **pas utilisable** dans DragonRuby. mruby n'inclut pas `Regexp` par défaut. Ce matcher existe dans le code source mais ne peut pas être appelé.
 
