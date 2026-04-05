@@ -5,7 +5,7 @@ module DrSpec
         @instance ||= new
       end
 
-      def self.reset!
+      def self.reset
         @instance = nil
       end
 

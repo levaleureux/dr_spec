@@ -1,0 +1,21 @@
+* EXCEPTION:
+* ERROR: Exception while requiring app/tests.rb.
+* EXCEPTION: ~Runtime#add_to_require_queue~ failed for =app/tests.rb=.
+* ERROR: Exception while requiring lib/dr_spec/dragon_specs.rb.
+* EXCEPTION: ~Runtime#add_to_require_queue~ failed for =lib/dr_spec/dragon_specs.rb=.
+* ERROR: Exception while requiring lib/dr_spec/core/dsl.rb.
+* EXCEPTION: ~Runtime#add_to_require_queue~ failed for =lib/dr_spec/core/dsl.rb=.
+* ERROR:
+Undefined method alias_method for main.
+
+
+** Backtrace:
+*** lib/dr_spec/core/dsl.rb:35
+*** lib/dr_spec/dragon_specs.rb:47
+*** app/tests.rb:6
+** Backtrace:
+*** lib/dr_spec/dragon_specs.rb:47
+*** app/tests.rb:6
+** Backtrace:
+*** app/tests.rb:6
+** Backtrace:

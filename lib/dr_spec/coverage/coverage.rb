@@ -32,10 +32,10 @@ module DrSpec
       Tracker.instance.report if enabled?
     end
 
-    def self.reset!
+    def self.reset
       @enabled = false
       @track_path = nil
-      Tracker.reset!
+      Tracker.reset
     end
   end
 end

@@ -6,13 +6,13 @@
 
 spec "DrSpec::Coverage.start" do
   specify "enables coverage tracking" do
-    DrSpec::Coverage.reset!
+    DrSpec::Coverage.reset
     DrSpec::Coverage.start("spec/fixtures/")
     expect(DrSpec::Coverage.enabled?).to be_truthy
   end
 
   specify "does not instrument files outside track path" do
-    DrSpec::Coverage.reset!
+    DrSpec::Coverage.reset
     DrSpec::Coverage.start("app/nonexistent/")
 
     tracker = DrSpec::Coverage::Tracker.instance
@@ -20,7 +20,7 @@ spec "DrSpec::Coverage.start" do
   end
 
   specify "full workflow: start, require, execute, check coverage" do
-    DrSpec::Coverage.reset!
+    DrSpec::Coverage.reset
     DrSpec::Coverage.start("spec/fixtures/")
 
     # Transparent require — instrumented automatically

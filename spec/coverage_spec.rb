@@ -6,7 +6,7 @@
 
 spec "coverage instrumentation" do
   before do
-    DrSpec::Coverage::Tracker.reset!
+    DrSpec::Coverage::Tracker.reset
     @tracker = DrSpec::Coverage::Tracker.instance
     @instrumenter = DrSpec::Coverage::Instrumenter.new
 
