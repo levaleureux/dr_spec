@@ -1,22 +1,19 @@
 [package]
 name = "dr_spec"
+version = "2.0.0"
 authors = ["levaleureux"]
-version = "0.1.0"
+description = "RSpec-like test framework for DragonRuby"
 homepage = "https://github.com/levaleureux/dr_spec"
-keywords = ['dragonruby', 'rspec']
-
-# Optional:
-# documentation = "https://example.com"
 repository = "https://github.com/levaleureux/dr_spec"
+keywords = ['dragonruby', 'rspec', 'testing']
 
-# Which files do you want to be automatically required from your package.
+# Smaug auto-requires: the user requires dragon_specs.rb which pulls in everything
+# via require_relative (works from any install location).
 requires = []
 
 [package.installs]
-# Example
-#
-# <from> = <to>
-# "lib/library.rb" = "app/lib/library.rb"
+# No installs mapping needed — dr_spec uses require_relative internally,
+# so it works directly from the smaug/ directory.
 
 [dragonruby]
 version = "5.9"
