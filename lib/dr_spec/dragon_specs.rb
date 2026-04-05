@@ -1,10 +1,11 @@
 $gtk.log_level = :on
 
-def run_specs
+def run_specs(reporter: nil)
   puts "================      running tests ========="
   puts "💨 running tests"
 
-  runner = DrSpec::Runner.new
+  reporter ||= select_reporter
+  runner = DrSpec::Runner.new(reporter: reporter)
   runner.run
 
   DrSpec::Coverage.report
@@ -49,6 +50,7 @@ require_relative "tests_formater.rb"
 require_relative "core/reporter.rb"
 require_relative "reporters/dots.rb"
 require_relative "reporters/quiet.rb"
+require_relative "reporters/doc.rb"
 require_relative "core/runner.rb"
 require_relative "coverage/tracker.rb"
 require_relative "coverage/instrumenter.rb"
@@ -57,3 +59,14 @@ require_relative "coverage/html_helpers.rb"
 require_relative "coverage/html_style.rb"
 require_relative "coverage/html_reporter.rb"
 require_relative "coverage/coverage.rb"
+
+def select_reporter
+  args = $gtk.cli_arguments.keys.map(&:to_s)
+  if args.include?("doc") || args.include?("format-doc")
+    DrSpec::Reporters::Doc.new
+  elsif args.include?("quiet")
+    DrSpec::Reporters::Quiet.new
+  else
+    DrSpec::Reporters::Dots.new
+  end
+end
