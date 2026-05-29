@@ -75,3 +75,27 @@ spec "coverage instrumentation" do
     expect(covered).to be_greater_than(0)
   end
 end
+
+# Non-regression #109 : litteraux multi-lignes (hash / array).
+spec "coverage instrumentation - litteraux multi-lignes" do
+  before do
+    DrSpec::Coverage::Tracker.reset
+    @instrumenter = DrSpec::Coverage::Instrumenter.new
+    @tracker = DrSpec::Coverage::Tracker.instance
+    @file = "spec/fixtures/sample_palette.rb"
+    @source = $gtk.read_file(@file)
+  end
+
+  specify "instrumente un hash/array multi-lignes sans casser la syntaxe" do
+    instrumented = @instrumenter.instrument(@source, @file, @tracker)
+    eval(instrumented)
+    expect(SamplePalette.fetch(:dark)).to eq({ r: 1, g: 2, b: 3 })
+    expect(SamplePalette.size).to eq 4
+  end
+
+  specify "n'injecte pas __dr_cov sur les lignes de continuation" do
+    instrumented = @instrumenter.instrument(@source, @file, @tracker)
+    continuation = instrumented.split("\n").select { |l| l.include?("r: 1") }.first
+    expect(continuation.include?("__dr_cov")).to eq false
+  end
+end
