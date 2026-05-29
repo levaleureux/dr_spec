@@ -112,8 +112,27 @@ module DrSpec
         return true if stripped == ""
         return true if stripped.start_with?("#")
         return true if SKIP_BARE.include?(stripped)
+        return true if end_terminator?(stripped)
 
         SKIP_PREFIXES.any? { |prefix| stripped.start_with?(prefix) }
+      end
+
+      # Vrai pour un `end` terminateur de bloc, meme suivi d'un appel ou d'un
+      # operateur (end, end.freeze, end), end,). Instrumenter ces lignes
+      # placerait __dr_cov AVANT le end -> il deviendrait la derniere
+      # expression du bloc et detournerait sa valeur de retour. On exclut les
+      # identifiants commencant par "end" (ending, endpoint).
+      def end_terminator?(stripped)
+        return false unless stripped.start_with?("end")
+
+        after = stripped[3]
+        after.nil? || !word_char?(after)
+      end
+
+      def word_char?(char)
+        (char >= "a" && char <= "z") ||
+          (char >= "A" && char <= "Z") ||
+          (char >= "0" && char <= "9") || char == "_"
       end
 
       def detect_heredoc(line)
