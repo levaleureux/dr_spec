@@ -93,6 +93,12 @@ spec "coverage instrumentation - litteraux multi-lignes" do
     expect(SamplePalette.size).to eq 4
   end
 
+  specify "ne detourne pas la valeur d'un bloc do...end.freeze (#111)" do
+    instrumented = @instrumenter.instrument(@source, @file, @tracker)
+    eval(instrumented)
+    expect(SamplePalette.squares).to eq [0, 1, 4, 9]
+  end
+
   specify "n'injecte pas __dr_cov sur les lignes de continuation" do
     instrumented = @instrumenter.instrument(@source, @file, @tracker)
     continuation = instrumented.split("\n").select { |l| l.include?("r: 1") }.first

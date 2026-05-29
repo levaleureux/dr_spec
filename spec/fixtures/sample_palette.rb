@@ -12,8 +12,18 @@ module SamplePalette
     3, 4
   ].freeze
 
+  # Bloc do...end.freeze : la valeur de retour ne doit PAS etre detournee
+  # par l'instrumentation (cf. #111).
+  SQUARES = Array.new(4) do |i|
+    i * i
+  end.freeze
+
   def self.fetch(key)
     COLORS.fetch(key)
+  end
+
+  def self.squares
+    SQUARES
   end
 
   def self.size
