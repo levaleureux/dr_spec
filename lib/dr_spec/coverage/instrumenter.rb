@@ -18,6 +18,7 @@ module DrSpec
         in_heredoc = false
         heredoc_end = nil
         in_block_comment = false
+        depth = 0
 
         instrumented_lines = []
 
@@ -48,6 +49,14 @@ module DrSpec
             next
           end
 
+          # Continuation line of an open multi-line literal (hash/array/call):
+          # do not inject in the middle of the expression.
+          if depth > 0
+            instrumented_lines << line
+            depth += bracket_delta(line)
+            next
+          end
+
           # Detect heredoc start
           if stripped.include?("<<")
             heredoc_marker = detect_heredoc(stripped)
@@ -66,12 +75,38 @@ module DrSpec
             tracker.mark_executable(file_path, line_num)
             instrumented_lines << "__dr_cov(\"#{file_path}\", #{line_num}); #{line}"
           end
+          depth += bracket_delta(line)
         end
 
         instrumented_lines.join("\n")
       end
 
       private
+
+      # Variation nette de profondeur de parenthésage pour une ligne :
+      # +1 par { [ ( et -1 par } ] ), en ignorant le contenu des chaînes et
+      # les commentaires (#). Pas de Regexp (indisponible en mRuby).
+      def bracket_delta(line)
+        delta = 0
+        quote = nil
+        i = 0
+        while i < line.length
+          c = line[i]
+          if quote
+            quote = nil if c == quote
+          elsif c == "'" || c == '"'
+            quote = c
+          elsif c == "#"
+            break
+          elsif c == "{" || c == "[" || c == "("
+            delta += 1
+          elsif c == "}" || c == "]" || c == ")"
+            delta -= 1
+          end
+          i += 1
+        end
+        delta
+      end
 
       def skip_line?(stripped)
         return true if stripped == ""
