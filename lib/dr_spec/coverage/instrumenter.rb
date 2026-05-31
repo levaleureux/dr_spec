@@ -10,6 +10,14 @@ module DrSpec
         "def ", "rescue ", "ensure ", "when ", "elsif "
       ].freeze
 
+      # Operateurs binaires qui, en FIN de ligne, prolongent l'expression sur la
+      # ligne suivante. On exclut sciemment "|" et "&" isoles ("do |x|" finit par
+      # "|", "foo(&" ouvre une parenthese -> deja gere par la profondeur).
+      CONTINUATION_OPERATORS = [
+        "&&", "||", ",", ".", "&.", "+", "-", "*", "/", "%",
+        "==", "!=", "<=", ">=", "<", ">", "="
+      ].freeze
+
       def instrument(source, file_path, tracker)
         lines = source.split("\n")
         source_lines = lines.map { |l| "#{l}\n" }
@@ -19,6 +27,7 @@ module DrSpec
         heredoc_end = nil
         in_block_comment = false
         depth = 0
+        prev_continues = false
 
         instrumented_lines = []
 
@@ -30,15 +39,18 @@ module DrSpec
           if stripped == "=begin"
             in_block_comment = true
             instrumented_lines << line
+            prev_continues = false
             next
           end
           if stripped == "=end"
             in_block_comment = false
             instrumented_lines << line
+            prev_continues = false
             next
           end
           if in_block_comment
             instrumented_lines << line
+            prev_continues = false
             next
           end
 
@@ -46,14 +58,17 @@ module DrSpec
           if in_heredoc
             in_heredoc = false if stripped == heredoc_end
             instrumented_lines << line
+            prev_continues = false
             next
           end
 
-          # Continuation line of an open multi-line literal (hash/array/call):
-          # do not inject in the middle of the expression.
-          if depth > 0
+          # Continuation : litteral multi-lignes ouvert (crochet) OU ligne
+          # precedente terminee par un operateur de continuation (&&, +, ...).
+          # Ne pas injecter __dr_cov au milieu de l'expression.
+          if depth > 0 || prev_continues
             instrumented_lines << line
             depth += bracket_delta(line)
+            prev_continues = depth.zero? && continuation?(line)
             next
           end
 
@@ -65,6 +80,7 @@ module DrSpec
               heredoc_end = heredoc_marker
               tracker.mark_executable(file_path, line_num)
               instrumented_lines << "__dr_cov(\"#{file_path}\", #{line_num}); #{line}"
+              prev_continues = false
               next
             end
           end
@@ -76,6 +92,7 @@ module DrSpec
             instrumented_lines << "__dr_cov(\"#{file_path}\", #{line_num}); #{line}"
           end
           depth += bracket_delta(line)
+          prev_continues = depth.zero? && continuation?(line)
         end
 
         instrumented_lines.join("\n")
@@ -106,6 +123,36 @@ module DrSpec
           i += 1
         end
         delta
+      end
+
+      # Vrai si la portion de CODE de la ligne (hors commentaire de fin) se
+      # termine par un operateur de continuation -> la ligne suivante prolonge
+      # l'expression et ne doit pas etre instrumentee.
+      def continuation?(line)
+        code = code_part(line).strip
+        return false if code == ""
+        return true if code.end_with?("\\")
+
+        CONTINUATION_OPERATORS.any? { |op| code.end_with?(op) }
+      end
+
+      # Portion de code de la ligne : retire un commentaire de fin (# hors
+      # chaine), avec le meme scan que bracket_delta (pas de Regexp en mRuby).
+      def code_part(line)
+        quote = nil
+        i = 0
+        while i < line.length
+          c = line[i]
+          if quote
+            quote = nil if c == quote
+          elsif c == "'" || c == '"'
+            quote = c
+          elsif c == "#"
+            return line[0...i]
+          end
+          i += 1
+        end
+        line
       end
 
       def skip_line?(stripped)

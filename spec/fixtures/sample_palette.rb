@@ -29,4 +29,12 @@ module SamplePalette
   def self.size
     LIST.length
   end
+
+  # Predicat coupe par un operateur de continuation (&&) en fin de ligne (#113).
+  # L'instrumenteur ne doit PAS injecter __dr_cov sur la 2e ligne : sinon le &&
+  # rattacherait le marqueur et la methode ne renverrait que le test sur y.
+  def self.inside?(x, y, w, h)
+    x >= 0 && x <= w &&
+      y >= 0 && y <= h
+  end
 end
