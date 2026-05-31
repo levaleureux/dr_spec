@@ -105,3 +105,29 @@ spec "coverage instrumentation - litteraux multi-lignes" do
     expect(continuation.include?("__dr_cov")).to eq false
   end
 end
+
+# Non-regression #113 : continuation d'expression par operateur (&&) en fin de
+# ligne. L'instrumenteur ne doit pas couper l'expression ni detourner sa valeur.
+spec "coverage instrumentation - continuations par operateur (#113)" do
+  before do
+    DrSpec::Coverage::Tracker.reset
+    @instrumenter = DrSpec::Coverage::Instrumenter.new
+    @tracker = DrSpec::Coverage::Tracker.instance
+    @file = "spec/fixtures/sample_palette.rb"
+    @source = $gtk.read_file(@file)
+  end
+
+  specify "ne detourne pas un predicat coupe par && en fin de ligne" do
+    instrumented = @instrumenter.instrument(@source, @file, @tracker)
+    eval(instrumented)
+    # x hors bornes -> doit etre false (et non le seul test sur y, qui serait vrai).
+    expect(SamplePalette.inside?(-1, 5, 10, 10)).to eq false
+    expect(SamplePalette.inside?(5, 5, 10, 10)).to eq true
+  end
+
+  specify "n'injecte pas __dr_cov sur la ligne de continuation (&&)" do
+    instrumented = @instrumenter.instrument(@source, @file, @tracker)
+    line = instrumented.split("\n").select { |l| l.include?("y >= 0 && y <= h") }.first
+    expect(line.include?("__dr_cov")).to eq false
+  end
+end
