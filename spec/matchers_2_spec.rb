@@ -72,6 +72,13 @@ spec "Numeric Comparison matchers" do
     expect(5).to be_less_than_or_equal_to 5
     expect(5).not_to be_less_than_or_equal_to 4
   end
+  specify "be_between (bornes incluses)" do
+    expect(0).to be_between(0, 255)
+    expect(128).to be_between(0, 255)
+    expect(255).to be_between(0, 255)
+    expect(-1).not_to be_between(0, 255)
+    expect(256).not_to be_between(0, 255)
+  end
 end
 
 # Boolean matchers
