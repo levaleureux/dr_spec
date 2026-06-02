@@ -52,3 +52,17 @@ end
 def be_less_than_or_equal_to expected, fail_with: ""
   LessThanOrEqualToMatcher.new expected, fail_with
 end
+
+# Bornes INCLUSES : passe si min <= actual <= max. @expected = [min, max].
+class BetweenMatcher < CoreMatcher
+  def positive_match? actual
+    [
+      actual >= @expected[0] && actual <= @expected[1],
+      "#{actual} is not between #{@expected[0]} and #{@expected[1]}. #{@fail_with}"
+    ]
+  end
+end
+
+def be_between min, max, fail_with: ""
+  BetweenMatcher.new([min, max], fail_with)
+end
