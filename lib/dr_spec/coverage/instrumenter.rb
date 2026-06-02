@@ -62,10 +62,11 @@ module DrSpec
             next
           end
 
-          # Continuation : litteral multi-lignes ouvert (crochet) OU ligne
-          # precedente terminee par un operateur de continuation (&&, +, ...).
+          # Continuation : litteral multi-lignes ouvert (crochet), ligne
+          # precedente terminee par un operateur (&&, +, and, ?, ...) OU ligne
+          # courante DEBUTANT par un operateur de chaine (.meth, &.meth).
           # Ne pas injecter __dr_cov au milieu de l'expression.
-          if depth > 0 || prev_continues
+          if depth > 0 || prev_continues || leading_chain?(stripped)
             instrumented_lines << line
             depth += bracket_delta(line)
             prev_continues = depth.zero? && continuation?(line)
@@ -132,8 +133,41 @@ module DrSpec
         code = code_part(line).strip
         return false if code == ""
         return true if code.end_with?("\\")
+        return true if keyword_continuation?(code)
+        return true if ternary_continuation?(code)
 
         CONTINUATION_OPERATORS.any? { |op| code.end_with?(op) }
+      end
+
+      # Mot-cle de continuation (`and`/`or`) en fin de ligne, borne par un espace
+      # pour ne pas le confondre avec un identifiant (command, factor, ...).
+      def keyword_continuation?(code)
+        code.end_with?(" and") || code.end_with?(" or") || code == "and" || code == "or"
+      end
+
+      # Ligne de ternaire coupee : se termine par `?` ou `:` PRECEDE d'un espace.
+      # L'espace distingue le ternaire (`cond ?`, `val :`) d'un predicat
+      # (`empty?`) ou d'un symbole, qui n'ont pas d'espace avant le signe.
+      def ternary_continuation?(code)
+        last = code[-1]
+        return false unless last == "?" || last == ":"
+
+        code.length >= 2 && code[-2] == " "
+      end
+
+      # Ligne DEBUTANT par un operateur de chaine (`.meth`, `&.meth`) : elle
+      # prolonge l'expression de la ligne precedente (operateur en tete de ligne,
+      # donc non detectable par la fin de la ligne precedente).
+      def leading_chain?(stripped)
+        return true if stripped.start_with?("&.")
+
+        stripped.start_with?(".") && stripped.length > 1 && method_start?(stripped[1])
+      end
+
+      # Premier caractere licite d'un nom de methode (lettre ou _ ; pas un
+      # chiffre, pour ne pas happer un litteral flottant comme `.5`).
+      def method_start?(char)
+        (char >= "a" && char <= "z") || (char >= "A" && char <= "Z") || char == "_"
       end
 
       # Portion de code de la ligne : retire un commentaire de fin (# hors
