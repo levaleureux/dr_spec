@@ -7,6 +7,7 @@ require "lib/dr_spec/dragon_specs.rb"
 
 require "spec/matchers_1_spec.rb"
 require "spec/matchers_2_spec.rb"
+require "spec/let_spec.rb"
 require "spec/shared_examples_spec.rb"
 require "spec/architecture_spec.rb"
 require "spec/matchers_3_spec.rb"

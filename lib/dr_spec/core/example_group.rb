@@ -1,7 +1,7 @@
 module DrSpec
   class ExampleGroup
     attr_reader :description, :metadata, :parent, :children, :examples,
-                :before_blocks, :after_blocks
+                :before_blocks, :after_blocks, :let_blocks
 
     def initialize(description, metadata: DrSpec::Metadata.new, parent: nil)
       @description   = description
@@ -11,6 +11,7 @@ module DrSpec
       @examples      = []
       @before_blocks = []
       @after_blocks  = []
+      @let_blocks    = {}
     end
 
     def add_child(child)
@@ -27,6 +28,15 @@ module DrSpec
 
     def add_after(&block)
       @after_blocks << block
+    end
+
+    def add_let(name, &block)
+      @let_blocks[name] = block
+    end
+
+    # Merge des `let` de la racine jusqu'a ce groupe : le plus interne gagne.
+    def collected_lets
+      ancestor_chain.reduce({}) { |acc, group| acc.merge(group.let_blocks) }
     end
 
     # Collect befores from root parent down to this group
