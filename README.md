@@ -78,6 +78,24 @@ spec "Setup specs" do
 end
 ```
 
+## Organising specs
+
+Require each spec file in your entrypoint (after requiring dr_spec), then call
+`run_specs`. On **macOS/Linux** you can instead auto-load every
+`spec/**/*_spec.rb` recursively with the opt-in helper `require_specs`:
+
+```ruby
+require "lib/dr_spec/dragon_specs.rb"
+require_specs            # loads all spec/**/*_spec.rb (macOS/Linux)
+run_specs
+```
+
+> **Coverage note:** keep manual `require`s if you use code coverage — it needs
+> your app files loaded (and instrumented) **before** the specs. `require_specs`
+> is therefore opt-in, not automatic.
+
+_Auto-load idea contributed by [@iMacTia](https://github.com/iMacTia) (#50)._
+
 ## Running specs
 
 ### With manual install
@@ -306,10 +324,12 @@ expect(nil).to be_nil
 |---------|-------------|
 | `be_instance_of(klass)` | Verifies exact class match |
 | `be_kind_of(klass)` | Verifies class or ancestor match |
+| `be_a(klass)` / `be_an(klass)` | Aliases of `be_kind_of` |
 
 ```ruby
 expect("hello").to be_instance_of(String)
 expect(1).to be_kind_of(Numeric)
+expect([1, 2]).to be_an(Array)
 ```
 
 ### Collection

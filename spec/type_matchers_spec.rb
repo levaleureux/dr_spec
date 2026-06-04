@@ -34,4 +34,19 @@ spec "type matchers" do
       expect("hello").not_to be_kind_of(Numeric)
     end
   end
+
+  # Aliases be_a / be_an de be_kind_of (#49, contribution d'iMacTia).
+  context "be_a / be_an (aliases de be_kind_of)" do
+    specify "be_a passe pour la classe parente" do
+      expect(42).to be_a(Numeric)
+    end
+
+    specify "be_an passe pour la classe exacte" do
+      expect([1, 2]).to be_an(Array)
+    end
+
+    specify "be_a échoue pour une classe sans lien" do
+      expect("hello").not_to be_a(Numeric)
+    end
+  end
 end
