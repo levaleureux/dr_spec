@@ -32,3 +32,7 @@ end
 def be_kind_of(expected, fail_with: "")
   BeKindOfMatcher.new(expected, fail_with)
 end
+
+# be_a / be_an : aliases de be_kind_of (cf. #49, contribution d'iMacTia).
+alias be_a be_kind_of
+alias be_an be_kind_of

@@ -1,5 +1,21 @@
 $gtk.log_level = :on
 
+# Charge tous les specs (spec/**/*_spec.rb) recursivement, sur macOS/Linux.
+# OPT-IN : a appeler explicitement. On NE l'appelle pas automatiquement car
+# l'ordre de couverture exige de charger le code applicatif AVANT les specs.
+# Cf. #50, contribution d'iMacTia (porte sur la v2 en helper opt-in).
+def require_specs(current_dir = "spec")
+  $gtk.exec("ls #{current_dir}").to_s.split("\n").each do |entry|
+    if entry.end_with?("_spec.rb")
+      require "#{current_dir}/#{entry}"
+    elsif !entry.include?(".")
+      require_specs("#{current_dir}/#{entry}")
+    end
+  end
+rescue StandardError
+  puts "require_specs: auto-load indisponible (macOS/Linux uniquement)."
+end
+
 def run_specs(reporter: nil)
   puts "================      running tests ========="
   puts "💨 running tests"
