@@ -228,6 +228,33 @@ end
 Like rspec. If you want to use this lib it's maybe because you already know
 rspec. If you want more doc please open an issue ;)
 
+### Lazy values with `let`
+
+`let(:name) { ... }` defines a memoized helper, evaluated lazily on first use
+and reset between examples. It can be overridden in a nested `context`.
+
+```ruby
+spec :player do
+  let(:player) { { x: 0, y: 0, hp: 3 } }
+
+  specify "starts at the origin" do
+    expect(player[:x]).to eq 0
+  end
+
+  context "after taking damage" do
+    let(:player) { { x: 0, y: 0, hp: 1 } } # overrides the outer let
+
+    specify "has less hp" do
+      expect(player[:hp]).to eq 1
+    end
+  end
+end
+```
+
+- **Lazy**: the block runs only when `player` is first called.
+- **Memoized per example**: the same object is returned within one example, and rebuilt fresh for the next.
+- **Overridable**: an inner `context` can redefine a `let`, and a `let` can reference other `let`s.
+
 ## Matchers
 
 dr_spec replicates commonly used RSpec matchers. All matchers support `to` and `not_to`, and accept an optional `fail_with:` parameter for custom error messages.
@@ -251,10 +278,13 @@ expect("foo").not_to eq "bar"
 | `be_greater_than_or_equal_to(n)` | Verifies value >= n |
 | `be_less_than(n)` | Verifies value < n |
 | `be_less_than_or_equal_to(n)` | Verifies value <= n |
+| `be_between(min, max)` | Verifies min <= value <= max (inclusive bounds) |
 
 ```ruby
 expect(10).to be_greater_than 5
 expect(5).to be_less_than_or_equal_to 5
+expect(128).to be_between(0, 255)
+expect(256).not_to be_between(0, 255)
 ```
 
 ### Boolean
