@@ -4,8 +4,13 @@ $gtk.log_level = :on
 # OPT-IN : a appeler explicitement. On NE l'appelle pas automatiquement car
 # l'ordre de couverture exige de charger le code applicatif AVANT les specs.
 # Cf. #50, contribution d'iMacTia (porte sur la v2 en helper opt-in).
+#
+# `ls` s'execute dans le cwd du process, alors que `require` est relatif au
+# game dir. On prefixe donc `ls` par le game dir (l'argument passe a
+# dragonruby) pour fonctionner aussi en layout mygame/. Cf. #122.
 def require_specs(current_dir = "spec")
-  $gtk.exec("ls #{current_dir}").to_s.split("\n").each do |entry|
+  game_dir = ($gtk.cli_arguments[:dragonruby] || ".").to_s
+  $gtk.exec("ls #{game_dir}/#{current_dir}").to_s.split("\n").each do |entry|
     if entry.end_with?("_spec.rb")
       require "#{current_dir}/#{entry}"
     elsif !entry.include?(".")
