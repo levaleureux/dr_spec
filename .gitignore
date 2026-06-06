@@ -4,3 +4,9 @@ test-failures.txt
 logs/
 docs/personal_tracking/
 /coverage/
+.DS_Store
+
+# Smaug : dossier d'install des dependances + artefacts (#51/#121)
+smaug/
+builds/
+exceptions/

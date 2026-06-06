@@ -16,5 +16,22 @@ requires = []
 # so it works directly from the smaug/ directory.
 
 [dragonruby]
-version = "5.9"
+version = "5.9"   # a ajuster lors de la validation Smaug (#121)
 edition = "standard"
+
+# --- Projet executable -------------------------------------------------------
+# Permet de lancer la propre suite de dr_spec via Smaug
+# (`smaug run --test app/tests.rb`). Porte de la PR #51 (contribution de
+# @iMacTia) sur la v2.
+#
+# ⚠️ NON TESTE : Smaug est actuellement ininstallable (smaug.io hors ligne,
+# depot ereborstudios/smaug inactif depuis juin 2023). Cf. #121. Peut aussi
+# entrer en conflit avec [package] selon le schema Smaug. A valider le jour ou
+# Smaug est de nouveau disponible.
+[project]
+name = "dr_spec"
+title = "dr_spec test suite"
+version = "2.0.0"
+authors = ["levaleureux"]
+icon = "metadata/icon.png"
+compile_ruby = false
