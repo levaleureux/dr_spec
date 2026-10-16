@@ -78,6 +78,31 @@ spec "Setup specs" do
 end
 ```
 
+## Implicit `args` (the real DragonRuby args)
+
+Every `specify`, `let`, `before` and `after` can use `args` without declaring
+it: the runner injects the real `$gtk.args` into each example. This lets a
+spec drive the real `tick(args)` of your game, inject inputs and assert on
+`args.state` or `args.outputs`, headless and deterministic:
+
+```ruby
+spec "Tab cycles the tool" do
+  specify "through the real tick" do
+    args.inputs.keyboard.key_down.set([:tab], true)
+    tick args
+    args.inputs.keyboard.key_down.clear
+    expect(args.state.tool).to eq :move
+  end
+end
+```
+
+Useful injection points on DragonRuby 6.x: `keyboard.key_down.set([:control, :z], true)`
+and `.clear`, `inputs.text << "p"` (letters arrive through the text channel),
+`mouse.x = `, `mouse.click = true` (also sets `key_down.left`), `mouse.button_left`,
+`mouse.wheel = { x: 0, y: 1 }`. With `--no-tick`, inputs persist between examples:
+clear what you set. A `let(:args)` overrides the injected value. Outside DragonRuby,
+`args` is `nil`.
+
 ## Organising specs
 
 Require each spec file in your entrypoint (after requiring dr_spec), then call

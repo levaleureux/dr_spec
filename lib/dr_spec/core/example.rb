@@ -28,6 +28,7 @@ module DrSpec
       ctx_class = Class.new(DrSpec::ExampleContext)
       define_lets(ctx_class)
       ctx = ctx_class.new
+      ctx.args = args
       begin
         group.collected_befores.each { |b| ctx.instance_exec(args, &b) }
         ctx.instance_exec(args, &@block)

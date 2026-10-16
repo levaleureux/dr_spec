@@ -13,7 +13,7 @@ module DrSpec
       @reporter.report_start(examples.length)
 
       examples.each do |example|
-        result = example.run
+        result = example.run(fresh_args)
         @results << result
         @reporter.report_example(result)
       end
@@ -31,6 +31,14 @@ module DrSpec
     end
 
     private
+
+    # Vrai args DragonRuby ($gtk.args) injecte dans chaque exemple (#125), pour
+    # des tests args-injecte (tick/rendu/input). nil hors runtime DragonRuby.
+    def fresh_args
+      return nil unless $gtk
+
+      $gtk.args
+    end
 
     def collect_examples
       examples = []

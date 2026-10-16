@@ -26,6 +26,7 @@ require "spec/json_reporter_spec.rb"
 require "spec/html_reporter_spec.rb"
 require "spec/tick_based_spec.rb"
 require "spec/tags_spec.rb"
+require "spec/args_injected_spec.rb"
 require "spec/main_spec.rb"
 
 puts "Test where run"
